@@ -3,10 +3,13 @@
 
 using namespace std;
 
-int strToI(string str);
+// Fungsi untuk menampilkan data inventaris
 void readDataInventaris();
+
+// Fungsi untuk menampilkan keranjang
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
 
+// DATA INVENTARIS
 string invKodeNama[6][2] =
     {
         {"00A1", "Jeruk"},
@@ -25,7 +28,9 @@ int invStokHarga[6][2] = {
     {0, 25000},
     {1, 18000},
 };
+// END DATA INVENTARIS
 
+// DATA MEMBER
 string member[10][2] = {
     {"001", "Muhammad Rafli"},
     {"002", "Desy Nur Azizah"},
@@ -51,10 +56,10 @@ int main()
   string cartStr[arrSize][2] = {};
   int cartInt[arrSize][3];
 
-  // cout << "Tanggal Transaksi (DD-MM-YY): ";
-  // cin >> inBuyDate;
+  cout << "Tanggal Transaksi (DD-MM-YY): ";
+  cin >> inBuyDate;
 
-  // cout << "\n";
+  cout << "\n";
 
   do
   {
@@ -221,19 +226,8 @@ int main()
   return 0;
 }
 
-// int strToI(string str)
-// {
-//   int num = 0;
-
-//   for (int i = 0; i < str.length(); i++)
-//     num = num * 10 + (int(str[i]) - 48);
-
-//   return num;
-// }
-
 void readDataInventaris()
 {
-  // READ DATA
   for (int i = 0; i < arrSize; i++)
   {
     for (int j = 0; j < 2; j++)
@@ -246,7 +240,6 @@ void readDataInventaris()
     }
     cout << "\n";
   }
-  // END READ DATA
 }
 
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member)

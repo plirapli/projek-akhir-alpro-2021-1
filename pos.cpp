@@ -318,7 +318,7 @@ void UpdateStokBarang(string search)
     {
       counter++;
 
-      cout << "Update stok barang : ";
+      cout << "Update stok barang = ";
       cin >> stok[x];
 
       invStokHarga[x][0] = stok[x];
@@ -341,7 +341,7 @@ void UpdateHargaBarang(string search)
     {
       counter++;
 
-      cout << "Update harga barang : ";
+      cout << "Update harga barang = ";
       cin >> harga[x];
 
       invStokHarga[x][1] = harga[x];

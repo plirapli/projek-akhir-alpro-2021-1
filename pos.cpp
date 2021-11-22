@@ -9,6 +9,54 @@ void readDataInventaris();
 // Fungsi untuk menampilkan keranjang
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
 
+// Fungsi u/ mengubah stok
+void UpdateStokBarang(string search)
+{
+  int stok[5];
+  string nama[50];
+  
+  int counter=0;
+  for (int x=0; x<6; x++)
+  {
+    if (invKodeNama[x][0] == search)
+    {
+      counter++;
+
+      cout << "Update stok barang : ";
+      cin >> stok[x];
+
+      invStokHarga[x][0] = stok[x];
+
+      cout << "update seccessfull\n";
+        break;
+    }
+  }
+}
+
+// Fungsi u/ mengubah harga
+void UpdateHargaBarang(string search)
+{
+  int harga[10];
+  string nama[50];
+  
+  int counter=0;
+  for (int x=0; x<6; x++)
+  {
+    if (invKodeNama[x][0] == search)
+    {
+      counter++;
+
+      cout << "Update harga barang : ";
+      cin >> harga[x];
+
+      invStokHarga[x][1] = harga[x];
+
+      cout << "update seccessfull\n";
+        break;
+    }
+  }  
+}
+
 // DATA INVENTARIS
 string invKodeNama[6][2] =
     {
@@ -43,6 +91,64 @@ int arrSize = 6;
 
 int main()
 {
+  char MenuOption;
+
+ cout<<"MENU\n"
+     <<"[1] INVENTARIS\n"
+     <<"[2] KASIR\n"
+     <<"Pilih > ";
+ cin >> MenuOption;
+
+ if (MenuOption == '1')
+ {
+  char option, ulang, revaluestok;
+  string kode;
+
+  // FITUR INVENTARIS
+  do
+  {
+    cout<<"[1] Tampilkan Daftar Inventaris\n"
+        <<"[2] Ubah Stok\n"
+        <<"[3] Ubah harga\n"
+        <<"[4] Exit\n"
+        <<"Pilih > ";
+    cin >> option;
+
+    switch (option)
+    {
+     case '1':
+      readDataInventaris();
+      cout << endl;
+      option = '3';
+      break;
+     case '2': readDataInventaris();
+      cin.ignore();
+      option = '3';
+      cout << "\nSearch kode barang = ";
+      getline(cin, kode);
+      UpdateStokBarang(kode);
+      break;
+     case '3': readDataInventaris();
+      cin.ignore();
+      option = '3';
+      cout << "\nSearch kode barang = ";
+      getline(cin, kode);
+      UpdateHargaBarang(kode);
+      break;
+     case '4':
+      option = '0';
+      break;
+     default:
+      option = '3';
+      cout << "Pilihan tidak valid\n";
+      break;
+    }
+  } while (option == '3');
+  cout << "Thank You\n";
+ // END FITUR INVENTARIS
+ } else if (MenuOption == '2')
+ {
+
   char menuEnum;
 
   // FITUR KASIR
@@ -222,7 +328,7 @@ int main()
 
   } while (ulangi == 1);
   // END FITUR KASIR
-
+ }
   return 0;
 }
 

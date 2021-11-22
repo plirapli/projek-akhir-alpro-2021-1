@@ -9,25 +9,32 @@ void readDataInventaris();
 // Fungsi untuk menampilkan keranjang
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
 
+// Fungsi u/ mengubah stok
+void UpdateStokBarang(string search);
+
+// Fungsi u/ mengubah harga
+void UpdateHargaBarang(string search);
+
 // DATA INVENTARIS
 // Kode dan Nama
-string invKodeNama[6][2] = {
-    {"00A1", "Jeruk"},
-    {"00A2", "Apel"},
-    {"00A3", "Mangga"},
-    {"00A4", "Pir"},
-    {"00B1", "Semangka"},
-    {"00B2", "Melon"},
+string invKodeNama[6][2] =
+    {
+        {"00A1", "Printer Canon Ip 700"},
+        {"00A2", "Laptop Acer"},
+        {"00A3", "Hardisk Maxtor 60GB"},
+        {"00A4", "Flashdisk Toshiba 8GB"},
+        {"00B1", "Notebook Asus"},
+        {"00B2", "Printer Epson Stylus"},
 };
 
 // Stok dan Harga
 int invStokHarga[6][2] = {
-    {20, 8000},
-    {42, 6500},
-    {35, 4000},
-    {7, 3200},
-    {0, 25000},
-    {1, 18000},
+    {20, 550000},
+    {42, 800000},
+    {35, 450000},
+    {7, 100000},
+    {0, 3000000},
+    {1, 2800000},
 };
 // END DATA INVENTARIS
 
@@ -50,26 +57,78 @@ int main()
 {
   // Initialize Main Variable
   int jmlCart = 0, logIndex = 1, activeMember = 5;
-  char menuEnum;
+  char MenuOption;
 
-  cout << "[1] Lihat Penjualan \n"
-       << "[2] Kasir \n"
+  cout << "MENU \n"
+       << "[1] INVENTARIS \n"
+       << "[2] KASIR \n"
        << "Pilih > ";
-  cin >> menuEnum;
+  cin >> MenuOption;
 
-  switch (menuEnum)
+  if (MenuOption == '1')
   {
-  case '1':
-  {
-    cout << "Riwayat Penjualan \n";
+    char option, ulang, revaluestok;
+    string kode;
 
-    for (int i = 0; i < logIndex; i++)
-      cout << "[" + logTglPenjualan[i] + "] " << logHargaPenjualan[i] << "\n";
+    // FITUR INVENTARIS
+    do
+    {
+      cout << "[1] Tampilkan Daftar Inventaris \n"
+           << "[2] Ubah Stok \n"
+           << "[3] Ubah harga \n"
+           << "[4] Exit \n"
+           << "Pilih > ";
+      cin >> option;
 
-    break;
+      switch (option)
+      {
+      case '1':
+        readDataInventaris();
+        cout << endl;
+        option = '3';
+        break;
+      case '2':
+        readDataInventaris();
+        cin.ignore();
+        option = '3';
+        cout << "\nSearch kode barang = ";
+        getline(cin, kode);
+        UpdateStokBarang(kode);
+        break;
+      case '3':
+        readDataInventaris();
+        cin.ignore();
+        option = '3';
+        cout << "\nSearch kode barang = ";
+        getline(cin, kode);
+        UpdateHargaBarang(kode);
+        break;
+      case '4':
+        option = '0';
+        break;
+      default:
+        option = '3';
+        cout << "Pilihan tidak valid \n";
+        break;
+      }
+    } while (option == '3');
+    cout << "Thank You \n";
+    // END FITUR INVENTARIS
   }
-  case '2':
+  else if (MenuOption == '2')
   {
+    char menuEnum;
+
+    // case '1':
+    // {
+    //   cout << "Riwayat Penjualan \n";
+
+    //   for (int i = 0; i < logIndex; i++)
+    //     cout << "[" + logTglPenjualan[i] + "] " << logHargaPenjualan[i] << "\n";
+
+    //   break;
+    // }
+
     // FITUR KASIR
     // Initialize variable
     bool ulangi = 1, isMember = 0;
@@ -251,15 +310,7 @@ int main()
 
     } while (ulangi == 1);
     // END FITUR KASIR
-
-    break;
   }
-
-  default:
-    cout << "Menu Invalid \n";
-    break;
-  }
-
   return 0;
 }
 
@@ -276,6 +327,52 @@ void readDataInventaris()
       cout << invStokHarga[i][j] << separator;
     }
     cout << "\n";
+  }
+}
+
+void UpdateStokBarang(string search)
+{
+  int stok[5];
+  string nama[50];
+
+  int counter = 0;
+  for (int x = 0; x < 6; x++)
+  {
+    if (invKodeNama[x][0] == search)
+    {
+      counter++;
+
+      cout << "Update stok barang = ";
+      cin >> stok[x];
+
+      invStokHarga[x][0] = stok[x];
+
+      cout << "update seccessfull\n";
+      break;
+    }
+  }
+}
+
+void UpdateHargaBarang(string search)
+{
+  int harga[10];
+  string nama[50];
+
+  int counter = 0;
+  for (int x = 0; x < 6; x++)
+  {
+    if (invKodeNama[x][0] == search)
+    {
+      counter++;
+
+      cout << "Update harga barang = ";
+      cin >> harga[x];
+
+      invStokHarga[x][1] = harga[x];
+
+      cout << "update seccessfull\n";
+      break;
+    }
   }
 }
 

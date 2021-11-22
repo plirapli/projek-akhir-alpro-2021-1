@@ -18,21 +18,21 @@ void UpdateHargaBarang(string search);
 // DATA INVENTARIS
 string invKodeNama[6][2] =
     {
-        {"00A1", "Jeruk"},
-        {"00A2", "Apel"},
-        {"00A3", "Mangga"},
-        {"00A4", "Pir"},
-        {"00B1", "Semangka"},
-        {"00B2", "Melon"},
+        {"00A1", "Printer Canon Ip 700"},
+        {"00A2", "Laptop Acer"},
+        {"00A3", "Hardisk Maxtor 60GB"},
+        {"00A4", "Flashdisk Toshiba 8GB"},
+        {"00B1", "Notebook Asus"},
+        {"00B2", "Printer Epson Stylus"},
 };
 
 int invStokHarga[6][2] = {
-    {20, 8000},
-    {42, 6500},
-    {35, 4000},
-    {7, 3200},
-    {0, 25000},
-    {1, 18000},
+    {20, 550000},
+    {42, 800000},
+    {35, 450000},
+    {7, 100000},
+    {0, 3000000},
+    {1, 2800000},
 };
 // END DATA INVENTARIS
 

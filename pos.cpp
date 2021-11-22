@@ -9,22 +9,25 @@ void readDataInventaris();
 // Fungsi untuk menampilkan keranjang
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
 
+// Fungsi untuk mengenerate kode transaksi
+string noTransaksi(string tgl);
+
 // Fungsi u/ mengubah stok
 void UpdateStokBarang(string search);
 
 // Fungsi u/ mengubah harga
 void UpdateHargaBarang(string search);
 
+// Global Variables
 // DATA INVENTARIS
 // Kode dan Nama
-string invKodeNama[6][2] =
-    {
-        {"00A1", "Printer Canon Ip 700"},
-        {"00A2", "Laptop Acer"},
-        {"00A3", "Hardisk Maxtor 60GB"},
-        {"00A4", "Flashdisk Toshiba 8GB"},
-        {"00B1", "Notebook Asus"},
-        {"00B2", "Printer Epson Stylus"},
+string invKodeNama[6][2] = {
+    {"00A1", "Printer Canon Ip 700"},
+    {"00A2", "Laptop Acer"},
+    {"00A3", "Hardisk Maxtor 60GB"},
+    {"00A4", "Flashdisk Toshiba 8GB"},
+    {"00B1", "Notebook Asus"},
+    {"00B2", "Printer Epson Stylus"},
 };
 
 // Stok dan Harga
@@ -48,7 +51,7 @@ string member[10][2] = {
 };
 
 // DATA PENJUALAN
-string logTglPenjualan[50] = {"15-10-2021"};
+string logPenjualan[50][2] = {{"1510211234", "15-10-2021"}};
 int logHargaPenjualan[50] = {43000};
 
 int arrSize = 6;
@@ -62,6 +65,7 @@ int main()
   cout << "MENU \n"
        << "[1] INVENTARIS \n"
        << "[2] KASIR \n"
+       << "[3] Log Penjualan \n"
        << "Pilih > ";
   cin >> MenuOption;
 
@@ -115,25 +119,15 @@ int main()
     cout << "Thank You \n";
     // END FITUR INVENTARIS
   }
+
+  // FITUR KASIR
   else if (MenuOption == '2')
   {
-    char menuEnum;
-
-    // case '1':
-    // {
-    //   cout << "Riwayat Penjualan \n";
-
-    //   for (int i = 0; i < logIndex; i++)
-    //     cout << "[" + logTglPenjualan[i] + "] " << logHargaPenjualan[i] << "\n";
-
-    //   break;
-    // }
-
-    // FITUR KASIR
     // Initialize variable
+    char menuEnum;
     bool ulangi = 1, isMember = 0;
     int indexBarang = 6, inputQty, total = 0, paid;
-    string inBuyDate, inKodeBarang, inMember;
+    string inBuyDate, noTrans, inKodeBarang, inMember;
 
     // Initialize Cart
     string cartStr[arrSize][2] = {};
@@ -141,6 +135,8 @@ int main()
 
     cout << "Tanggal Transaksi (DD-MM-YY): ";
     cin >> inBuyDate;
+
+    noTrans = noTransaksi(inBuyDate);
 
     cout << "\n";
 
@@ -283,12 +279,14 @@ int main()
 
           int change = paid - total;
 
-          logTglPenjualan[logIndex] = inBuyDate;
+          logPenjualan[logIndex][0] = noTrans;
+          logPenjualan[logIndex][1] = inBuyDate;
           logHargaPenjualan[logIndex] = total;
 
           logIndex++;
 
           // Nota Pembelian
+          cout << "No. Transaksi: " << noTrans << "\n";
           readCart(cartStr, cartInt, jmlCart, total, isMember);
           cout << "Bayar : Rp" << paid << "\n"
                << "Kembali : Rp" << change << "\n";
@@ -311,6 +309,25 @@ int main()
     } while (ulangi == 1);
     // END FITUR KASIR
   }
+  else if (MenuOption == '3')
+  {
+    // Initialize var
+    int total = 0;
+
+    cout << "Riwayat Penjualan : \n";
+
+    for (int i = 0; i < logIndex; i++)
+    {
+      cout << "[" + logPenjualan[i][1] + "] "
+           << "#" + logPenjualan[i][0] + " "
+           << "Rp" << logHargaPenjualan[i] << "\n";
+      total += logHargaPenjualan[i];
+    }
+
+    cout << "\n"
+         << "Total : Rp" << total;
+  }
+
   return 0;
 }
 
@@ -383,11 +400,11 @@ void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
   else
   {
     // Mencari jumlah kata terbanyak di field Nama barang
-    int totalColLength = 0, colLength[4] = {14, 8, 5, 10};
+    int totalColLength = 0, colLength[4] = {14, 12, 5, 10};
 
     for (int i = 0; i < jml; i++)
     {
-      int dataLength = cartStr[i][1].length() + 7;
+      int dataLength = cartStr[i][1].length() + 9;
       colLength[0] = (dataLength > colLength[0]) ? dataLength : colLength[0];
     }
 
@@ -438,4 +455,18 @@ void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
 
     cout << "Total : Rp" << total << "\n";
   }
+}
+
+string noTransaksi(string tgl)
+{
+  char tanggal[] = {tgl[0], tgl[1], tgl[3], tgl[4], tgl[6], tgl[7], '\0'};
+  char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+  string kodeTgl = tanggal;
+  string res = "";
+
+  for (int i = 0; i < 4; i++)
+    res += alphabet[rand() % 10];
+
+  return kodeTgl + res;
 }

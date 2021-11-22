@@ -10,52 +10,10 @@ void readDataInventaris();
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
 
 // Fungsi u/ mengubah stok
-void UpdateStokBarang(string search)
-{
-  int stok[5];
-  string nama[50];
-  
-  int counter=0;
-  for (int x=0; x<6; x++)
-  {
-    if (invKodeNama[x][0] == search)
-    {
-      counter++;
-
-      cout << "Update stok barang : ";
-      cin >> stok[x];
-
-      invStokHarga[x][0] = stok[x];
-
-      cout << "update seccessfull\n";
-        break;
-    }
-  }
-}
+void UpdateStokBarang(string search);
 
 // Fungsi u/ mengubah harga
-void UpdateHargaBarang(string search)
-{
-  int harga[10];
-  string nama[50];
-  
-  int counter=0;
-  for (int x=0; x<6; x++)
-  {
-    if (invKodeNama[x][0] == search)
-    {
-      counter++;
-
-      cout << "Update harga barang : ";
-      cin >> harga[x];
-
-      invStokHarga[x][1] = harga[x];
-
-      cout << "update seccessfull\n";
-        break;
-    }
-  }  
-}
+void UpdateHargaBarang(string search);
 
 // DATA INVENTARIS
 string invKodeNama[6][2] =
@@ -346,6 +304,52 @@ void readDataInventaris()
     }
     cout << "\n";
   }
+}
+
+void UpdateStokBarang(string search)
+{
+  int stok[5];
+  string nama[50];
+  
+  int counter=0;
+  for (int x=0; x<6; x++)
+  {
+    if (invKodeNama[x][0] == search)
+    {
+      counter++;
+
+      cout << "Update stok barang : ";
+      cin >> stok[x];
+
+      invStokHarga[x][0] = stok[x];
+
+      cout << "update seccessfull\n";
+        break;
+    }
+  }
+}
+
+void UpdateHargaBarang(string search)
+{
+  int harga[10];
+  string nama[50];
+  
+  int counter=0;
+  for (int x=0; x<6; x++)
+  {
+    if (invKodeNama[x][0] == search)
+    {
+      counter++;
+
+      cout << "Update harga barang : ";
+      cin >> harga[x];
+
+      invStokHarga[x][1] = harga[x];
+
+      cout << "update seccessfull\n";
+        break;
+    }
+  }  
 }
 
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member)

@@ -19,8 +19,12 @@ void UpdateStokBarang(string search);
 void UpdateHargaBarang(string search);
 
 // Global Variables
+
+// DATA ADMIN
+string g_admin[2][2] = {{"mrafli", "123210078"}, {"desyna", "123210083"}};
+
 // DATA INVENTARIS
-// Kode dan Nama
+// 1. Kode dan Nama
 string invKodeNama[6][2] = {
     {"00A1", "Printer Canon Ip 700"},
     {"00A2", "Laptop Acer"},
@@ -30,7 +34,7 @@ string invKodeNama[6][2] = {
     {"00B2", "Printer Epson Stylus"},
 };
 
-// Stok dan Harga
+// 2. Stok dan Harga
 int invStokHarga[6][2] = {
     {20, 550000},
     {42, 800000},
@@ -43,11 +47,9 @@ int invStokHarga[6][2] = {
 
 // DATA MEMBER
 string member[20][2] = {
-    {"mrafli", "Muhammad Rafli"},
-    {"desyna", "Desy Nur Azizah"},
     {"yoojung_simp", "Seva Giantama"},
-    {"shaziawaludin", "Shazi Awaludin"},
-    {"yurizacici", "Cici Yuriza"},
+    {"shazi_senpai", "Shazi Awaludin"},
+    {"cici_sunbae", "Cici Yuriza"},
     {"nurlight", "Heri Nur Cahyana"},
 };
 
@@ -63,7 +65,16 @@ int main()
   bool ulangiMenu = true;
   int jmlCart = 0, logIndex = 1, activeMember = 5;
   char MenuOption;
+  string username, passwd;
 
+  // Login
+  cout << "Login \n"
+       << "Username: ";
+  cin >> username;
+  cout << "Password: ";
+  cin >> passwd;
+
+  // Main Program
   do
   {
     cout << "MENU \n"
@@ -222,7 +233,10 @@ int main()
                   ulangiCari = 0;
                 }
                 else
+                {
                   cout << "Penambahan barang dibatalkan. \n\n";
+                  ulangiCari = 0;
+                }
               }
               else
                 cout << "Stok Habis! \n\n";

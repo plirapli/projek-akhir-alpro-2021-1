@@ -42,12 +42,13 @@ int invStokHarga[6][2] = {
 // END DATA INVENTARIS
 
 // DATA MEMBER
-string member[10][2] = {
-    {"001", "Muhammad Rafli"},
-    {"002", "Desy Nur Azizah"},
-    {"003", "Seva Giantama"},
-    {"004", "Shazi Awaludin"},
-    {"005", "Heri Nur Cahyana"},
+string member[20][2] = {
+    {"mrafli", "Muhammad Rafli"},
+    {"desyna", "Desy Nur Azizah"},
+    {"yoojung_simp", "Seva Giantama"},
+    {"shaziawaludin", "Shazi Awaludin"},
+    {"yurizacici", "Cici Yuriza"},
+    {"nurlight", "Heri Nur Cahyana"},
 };
 
 // DATA PENJUALAN

@@ -21,7 +21,7 @@ void UpdateHargaBarang(string search);
 // Global Variables
 
 // DATA ADMIN
-string g_admin[2][2] = {{"mrafli", "123210078"}, {"desyna", "123210083"}};
+string g_admin[2][3] = {{"mrafli", "123210078", "Rafli"}, {"desyna", "123210083, Desy"}};
 
 // DATA INVENTARIS
 // 1. Kode dan Nama
@@ -57,26 +57,46 @@ string member[20][2] = {
 string logPenjualan[50][2] = {{"1510211234", "15-10-21"}};
 int logHargaPenjualan[50] = {43000};
 
-int arrSize = 6;
+int invSize = 6, activeMember = 5;
 
 int main()
 {
   // Initialize Main Variable
-  bool ulangiMenu = true;
-  int jmlCart = 0, logIndex = 1, activeMember = 5;
+  bool ulangi = true;
+  int jmlCart = 0, logIndex = 1, indexUser = 2;
   char MenuOption;
   string username, passwd;
 
   // Login
-  cout << "Login \n"
-       << "Username: ";
-  cin >> username;
-  cout << "Password: ";
-  cin >> passwd;
+  do
+  {
+    ulangi == 1;
+
+    cout << "Login \n"
+         << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> passwd;
+
+    for (int i = 0; i < 2; i++)
+    {
+      indexUser = ((g_admin[i][0] == username) && g_admin[i][1] == passwd) ? i : 2;
+      if (indexUser != 2)
+        break;
+    }
+
+    if (indexUser != 2)
+      cout << "Username atau Password anda salah! \n\n";
+
+  } while (ulangi == 1);
 
   // Main Program
   do
   {
+    ulangi == 1;
+
+    cout << "Selamat datang, " + g_admin[indexUser][2] + "! \n\n";
+
     cout << "MENU \n"
          << "[1] INVENTARIS \n"
          << "[2] KASIR \n"
@@ -142,13 +162,13 @@ int main()
     {
       // Initialize variable
       char menuEnum;
-      bool ulangi = 1, isMember = 0;
+      bool isMember = 0;
       int indexBarang = 6, inputQty, total = 0, paid;
       string inBuyDate, noTrans, inKodeBarang, inMember;
 
       // Initialize Cart
-      string cartStr[arrSize][2] = {};
-      int cartInt[arrSize][3];
+      string cartStr[invSize][2] = {};
+      int cartInt[invSize][3];
 
       cout << "Tanggal Transaksi (DD-MM-YY): ";
       cin >> inBuyDate;
@@ -159,6 +179,8 @@ int main()
 
       do
       {
+        ulangi = 1;
+
         readDataInventaris();
         cout << "\n";
 
@@ -314,7 +336,8 @@ int main()
               logIndex++;
 
               // Nota Pembelian
-              cout << "No. Transaksi: " << noTrans << "\n";
+              cout << "No. Transaksi : " << noTrans << "\n"
+                   << "Kasir : ";
               readCart(cartStr, cartInt, jmlCart, total, isMember);
               cout << "Bayar : Rp" << paid << "\n"
                    << "Kembali : Rp" << change << "\n\n";
@@ -360,9 +383,9 @@ int main()
     }
 
     else if (MenuOption == '4')
-      ulangiMenu = 0;
+      ulangi = 0;
 
-  } while (ulangiMenu == 1);
+  } while (ulangi == 1);
 
   cout << "Terima Kasih. \n";
   return 0;
@@ -370,7 +393,7 @@ int main()
 
 void readDataInventaris()
 {
-  for (int i = 0; i < arrSize; i++)
+  for (int i = 0; i < invSize; i++)
   {
     for (int j = 0; j < 2; j++)
       cout << invKodeNama[i][j] + " - ";

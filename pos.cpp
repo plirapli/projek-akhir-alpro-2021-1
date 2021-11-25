@@ -91,7 +91,7 @@ int main()
 
         switch (option)
         {
-        case '1':
+        case '1': cout << "Daftar Barang: \n";
           readDataInventaris();
           cout << endl;
           option = '3';

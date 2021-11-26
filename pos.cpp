@@ -109,7 +109,7 @@ int main()
          << "[1] INVENTARIS \n"
          << "[2] KASIR \n"
          << "[3] Log Penjualan \n"
-         << "[4] Exit \n"
+         << "[0] Kembali \n"
          << "Pilih > ";
     cin >> MenuOption;
 
@@ -132,7 +132,7 @@ int main()
 
         switch (option)
         {
-        case '1':
+        case '1': cout << "Daftar Barang : \n";
           readDataInventaris();
           cout << endl;
           option = '3';
@@ -141,7 +141,7 @@ int main()
         case '2':
           readDataInventaris();
           option = '3';
-          cout << "\nSearch kode barang = ";
+          cout << "\nSearch kode barang : ";
           getline(cin, kode);
           UpdateStokBarang(kode);
           break;
@@ -149,7 +149,7 @@ int main()
         case '3':
           readDataInventaris();
           option = '3';
-          cout << "\nSearch kode barang = ";
+          cout << "\nSearch kode barang : ";
           getline(cin, kode);
           UpdateHargaBarang(kode);
           break;
@@ -164,7 +164,7 @@ int main()
           break;
         }
       } while (option == '3');
-      cout << "Thank You \n";
+      cout << "Terima Kasih \n";
       // END FITUR INVENTARIS
     }
 
@@ -371,8 +371,16 @@ int main()
 
         else if (menuEnum == '0')
         {
+          char kembali;
           cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";
-          ulangiKasir = 0;
+          cin >> kembali;
+          if (kembali == 'y' || kembali == 'Y')
+          {
+            ulangiKasir = 0;
+          }
+          else {
+            ulangiKasir = 1;
+          }
         }
 
         else
@@ -416,18 +424,25 @@ int main()
 
 void readDataInventaris()
 {
+  cout << setfill('-') << setw(66) << "\n";
+  cout << setfill(' ') << left << "\n"
+       << "|" << setw(15) << "Kode Barang"
+       << "|" << setw(25) <<"Nama Barang"
+       << "|" << setw(10) <<"Stok"
+       << "|" << setw(10) <<"Harga"
+       << "|";
+  cout <<setfill('-') << setw(66) << "\n";
+
+  cout << setfill(' ') << "\n";
   for (int i = 0; i < invSize; i++)
   {
-    for (int j = 0; j < 2; j++)
-      cout << g_invKodeNama[i][j] + " - ";
-
-    for (int j = 0; j < 2; j++)
-    {
-      string separator = (j >= 1) ? "" : " - ";
-      cout << g_invStokHarga[i][j] << separator;
-    }
-    cout << "\n";
+    cout << left << "|" << setw(15) << g_invKodeNama[i][0]
+         << "|" << setw(25) << g_invKodeNama[i][1]
+         << "|" << setw(10) << g_invStokHarga[i][0]
+         << "|" << setw(10) << g_invStokHarga[i][1];
+    cout << "|\n";
   }
+  cout<<setw(70)<<"\n";
 }
 
 void readCopyInv(int invStok[])
@@ -456,7 +471,7 @@ void UpdateStokBarang(string search)
     {
       counter++;
 
-      cout << "Update stok barang = ";
+      cout << "Update stok barang : ";
       cin >> stok[x];
 
       g_invStokHarga[x][0] = stok[x];
@@ -479,7 +494,7 @@ void UpdateHargaBarang(string search)
     {
       counter++;
 
-      cout << "Update harga barang = ";
+      cout << "Update harga barang : ";
       cin >> harga[x];
 
       g_invStokHarga[x][1] = harga[x];

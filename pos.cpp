@@ -11,14 +11,16 @@ void readCopyInv(int invStok[]);
 // Fungsi untuk menampilkan keranjang
 void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
 
-// Fungsi untuk mengenerate kode transaksi
-string noTransaksi(string tgl);
+void ReadMember();
 
 // Fungsi u/ mengubah stok
 void UpdateStokBarang(string search);
 
 // Fungsi u/ mengubah harga
 void UpdateHargaBarang(string search);
+
+// Fungsi untuk mengenerate kode transaksi
+string noTransaksi(string tgl);
 
 // Global Variables
 
@@ -58,47 +60,47 @@ string member[20][2] = {
 };
 
 // DATA PENJUALAN
-string logPenjualan[50][2] = {{"1510211234", "15-10-21"}};
-int logHargaPenjualan[50] = {43000};
+string logPenjualan[50][2];
+int logHargaPenjualan[50];
 
-int invSize = 6, activeMember = 5;
+int invSize = 6, activeMember = 4;
 
 int main()
 {
   // Initialize Main Variable
   bool ulangiMenu;
-  int jmlCart = 0, logIndex = 1, indexUser = 2;
+  int jmlCart = 0, logIndex = 0, indexUser = 2;
   char MenuOption;
   string username, passwd;
 
-  // Login
-  do
-  {
-    ulangiMenu == 1;
+  // // Login
+  // do
+  // {
+  //   ulangiMenu = 1;
 
-    cout << "Login \n"
-         << "Username: ";
-    cin >> username;
-    cout << "Password: ";
-    cin >> passwd;
+  //   cout << "Login \n"
+  //        << "Username: ";
+  //   cin >> username;
+  //   cout << "Password: ";
+  //   cin >> passwd;
 
-    for (int i = 0; i < 2; i++)
-    {
-      indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
+  //   for (int i = 0; i < 2; i++)
+  //   {
+  //     indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
 
-      if (indexUser != 2)
-      {
-        ulangiMenu = 0;
-        break;
-      }
-    }
+  //     if (indexUser != 2)
+  //     {
+  //       ulangiMenu = 0;
+  //       break;
+  //     }
+  //   }
 
-    if (indexUser == 2)
-      cout << "Username atau Password anda salah! \n\n";
-    else
-      cout << "Selamat datang, " + g_admin[indexUser][2] + "! \n\n";
+  //   if (indexUser == 2)
+  //     cout << "Username atau Password anda salah! \n\n";
+  //   else
+  //     cout << "Selamat datang, " + g_admin[indexUser][2] + "! \n\n";
 
-  } while (ulangiMenu == 1);
+  // } while (ulangiMenu == 1);
 
   // Main Program
   do
@@ -108,8 +110,9 @@ int main()
     cout << "MENU \n"
          << "[1] INVENTARIS \n"
          << "[2] KASIR \n"
-         << "[3] Log Penjualan \n"
-         << "[0] Kembali \n"
+         << "[3] LOG PENJUALAN \n"
+         << "[4] CRM \n"
+         << "[0] KELUAR \n"
          << "Pilih > ";
     cin >> MenuOption;
 
@@ -119,7 +122,6 @@ int main()
       char option, ulang, revaluestok;
       string kode;
 
-      // FITUR INVENTARIS
       do
       {
         cout << "[1] Tampilkan Daftar Inventaris \n"
@@ -132,7 +134,8 @@ int main()
 
         switch (option)
         {
-        case '1': cout << "Daftar Barang : \n";
+        case '1':
+          cout << "Daftar Barang : \n";
           readDataInventaris();
           cout << endl;
           option = '3';
@@ -164,8 +167,8 @@ int main()
           break;
         }
       } while (option == '3');
-      cout << "Terima Kasih \n";
-      // END FITUR INVENTARIS
+
+      cout << "Terima Kasih \n\n";
     }
 
     // FITUR KASIR
@@ -378,7 +381,8 @@ int main()
           {
             ulangiKasir = 0;
           }
-          else {
+          else
+          {
             ulangiKasir = 1;
           }
         }
@@ -400,13 +404,18 @@ int main()
 
       cout << "Riwayat Penjualan : \n";
 
-      for (int i = 0; i < logIndex; i++)
+      if (logIndex > 0)
       {
-        cout << "[" + logPenjualan[i][1] + "] "
-             << "#" + logPenjualan[i][0] + " "
-             << "Rp" << logHargaPenjualan[i] << "\n";
-        total += logHargaPenjualan[i];
+        for (int i = 0; i < logIndex; i++)
+        {
+          cout << "[" + logPenjualan[i][1] + "] "
+               << "#" + logPenjualan[i][0] + " "
+               << "Rp" << logHargaPenjualan[i] << "\n";
+          total += logHargaPenjualan[i];
+        }
       }
+      else
+        cout << "- \n";
 
       cout << "\n"
            << "Total : Rp" << total
@@ -414,6 +423,17 @@ int main()
     }
 
     else if (MenuOption == '4')
+    {
+      ReadMember();
+
+      cout << "[1] Tambah Member \n"
+           << "[2] Detail pengeluaran member \n"
+           << "[0] Kembali \n"
+           << "Pilih > ";
+      cin >> MenuOption;
+    }
+
+    else if (MenuOption == '0')
       ulangiMenu = 0;
 
   } while (ulangiMenu == 1);
@@ -424,25 +444,29 @@ int main()
 
 void readDataInventaris()
 {
-  cout << setfill('-') << setw(66) << "\n";
-  cout << setfill(' ') << left << "\n"
-       << "|" << setw(15) << "Kode Barang"
-       << "|" << setw(25) <<"Nama Barang"
-       << "|" << setw(10) <<"Stok"
-       << "|" << setw(10) <<"Harga"
+  int jmlGaris = 70;
+
+  cout << "+" << setfill('-') << setw(jmlGaris) << "+ \n";
+  cout << setfill(' ') << left
+       << "| " << setw(15) << "Kode Barang"
+       << "| " << setw(25) << "Nama Barang"
+       << "| " << setw(10) << "Stok"
+       << "| " << setw(10) << "Harga"
        << "|";
-  cout <<setfill('-') << setw(66) << "\n";
+  cout << setfill('-') << setw(jmlGaris) << "\n";
 
   cout << setfill(' ') << "\n";
   for (int i = 0; i < invSize; i++)
   {
-    cout << left << "|" << setw(15) << g_invKodeNama[i][0]
-         << "|" << setw(25) << g_invKodeNama[i][1]
-         << "|" << setw(10) << g_invStokHarga[i][0]
-         << "|" << setw(10) << g_invStokHarga[i][1];
+    cout << left
+         << "| " << setw(15) << g_invKodeNama[i][0]
+         << "| " << setw(25) << g_invKodeNama[i][1]
+         << "| " << setw(10) << g_invStokHarga[i][0]
+         << "| " << right << setw(10) << g_invStokHarga[i][1];
     cout << "|\n";
   }
-  cout<<setw(70)<<"\n";
+  cout << "+" << setfill('-') << setw(jmlGaris) << "+ \n";
+  setfill(' ');
 }
 
 void readCopyInv(int invStok[])
@@ -566,6 +590,21 @@ void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
 
     cout << "Total : Rp" << total << "\n";
   }
+}
+
+void ReadMember()
+{
+  int i, j;
+
+  for (i = 0; i < activeMember; i++)
+  {
+    cout << "| " << i + 1 << " | ";
+    for (j = 0; j < 2; j++)
+      cout << member[i][j] + " | ";
+
+    cout << "\n";
+  }
+  cout << "\n";
 }
 
 string noTransaksi(string tgl)

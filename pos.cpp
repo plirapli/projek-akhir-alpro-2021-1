@@ -3,33 +3,37 @@
 
 using namespace std;
 
-// Fungsi untuk menampilkan data inventaris
+// Menampilkan data inventaris
 void readDataInventaris();
 
 void readCopyInv(int invStok[]);
 
-// Fungsi untuk menampilkan keranjang
-void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member);
+// Menampilkan keranjang
+void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member = false);
 
+// Menampilkan daftar member
 void ReadMember();
 
-// Fungsi u/ mengubah stok
+// Menambahkan member baru
+void AddMember();
+
+// Mengubah stok
 void UpdateStokBarang(string search);
 
-// Fungsi u/ mengubah harga
+// Mengubah harga
 void UpdateHargaBarang(string search);
 
-// Fungsi untuk mengenerate kode transaksi
+// Mengenerate kode transaksi
 string noTransaksi(string tgl);
 
-// Global Variables
+// GLOBAL VARIABLES
 
-// DATA ADMIN
+// Data Admin
 string g_admin[2][3] = {
     {"mrafli", "123210078", "Rafli"},
     {"desyna", "123210083", "Desy"}};
 
-// DATA INVENTARIS
+// Data Inventaris
 // 1. Kode dan Nama
 string g_invKodeNama[6][2] = {
     {"00A1", "Printer Canon Ip 700"},
@@ -49,17 +53,16 @@ int g_invStokHarga[6][2] = {
     {0, 3000000},
     {1, 2800000},
 };
-// END DATA INVENTARIS
 
-// DATA MEMBER
-string member[20][2] = {
+// Data Member
+string g_member[20][2] = {
     {"yoojung_simp", "Seva Giantama"},
     {"shazi_senpai", "Shazi Awaludin"},
     {"cici_sunbae", "Cici Yuriza"},
     {"nurlight", "Heri Nur Cahyana"},
 };
 
-// DATA PENJUALAN
+// Data Penjualan
 string logPenjualan[50][2];
 int logHargaPenjualan[50];
 
@@ -70,7 +73,7 @@ int main()
   // Initialize Main Variable
   bool ulangiMenu;
   int jmlCart = 0, logIndex = 0, indexUser = 2;
-  char MenuOption;
+  char menuOption;
   string username, passwd;
 
   // // Login
@@ -111,13 +114,13 @@ int main()
          << "[1] INVENTARIS \n"
          << "[2] KASIR \n"
          << "[3] LOG PENJUALAN \n"
-         << "[4] CRM \n"
+         << "[4] CRM \n\n"
          << "[0] KELUAR \n"
          << "Pilih > ";
-    cin >> MenuOption;
+    cin >> menuOption;
 
     // FITUR INVENTARIS
-    if (MenuOption == '1')
+    if (menuOption == '1')
     {
       char option, ulang, revaluestok;
       string kode;
@@ -172,7 +175,7 @@ int main()
     }
 
     // FITUR KASIR
-    else if (MenuOption == '2')
+    else if (menuOption == '2')
     {
       // Initialize variable
       char menuEnum;
@@ -292,14 +295,14 @@ int main()
           if (menuEnum == '2')
           {
             cout << "Cart : \n";
-            readCart(cartStr, cartInt, jmlCart, total, isMember);
+            readCart(cartStr, cartInt, jmlCart, total);
           }
 
           // Next
           else if (menuEnum == '4')
           {
             cout << "Cart : \n";
-            readCart(cartStr, cartInt, jmlCart, total, isMember);
+            readCart(cartStr, cartInt, jmlCart, total);
 
             cout << "Lanjutkan (y/n)? ";
             cin >> menuEnum;
@@ -318,7 +321,7 @@ int main()
 
                   for (int i = 0; i < activeMember; i++)
                   {
-                    indexBarang = (member[i][0] == inMember) ? i : 20;
+                    indexBarang = (g_member[i][0] == inMember) ? i : 20;
                     if (indexBarang != 20)
                       break;
                   }
@@ -328,7 +331,7 @@ int main()
 
                 } while (indexBarang == 20);
 
-                cout << "[" + member[indexBarang][0] + "] " + member[indexBarang][1]
+                cout << "[" + g_member[indexBarang][0] + "] " + g_member[indexBarang][1]
                      << "\n\n";
                 isMember = 1;
               }
@@ -397,7 +400,7 @@ int main()
     // END FITUR KASIR
 
     // FITUR LAPORAN PENJUALAN
-    else if (MenuOption == '3')
+    else if (menuOption == '3')
     {
       // Initialize var
       int total = 0;
@@ -422,7 +425,8 @@ int main()
            << "\n\n";
     }
 
-    else if (MenuOption == '4')
+    // FITUR CRM
+    else if (menuOption == '4')
     {
       ReadMember();
 
@@ -430,10 +434,20 @@ int main()
            << "[2] Detail pengeluaran member \n"
            << "[0] Kembali \n"
            << "Pilih > ";
-      cin >> MenuOption;
+      cin >> menuOption;
+
+      switch (menuOption)
+      {
+      case '1':
+        AddMember();
+        break;
+
+      default:
+        break;
+      }
     }
 
-    else if (MenuOption == '0')
+    else if (menuOption == '0')
       ulangiMenu = 0;
 
   } while (ulangiMenu == 1);
@@ -594,17 +608,30 @@ void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
 
 void ReadMember()
 {
-  int i, j;
-
-  for (i = 0; i < activeMember; i++)
+  for (int i = 0; i < activeMember; i++)
   {
     cout << "| " << i + 1 << " | ";
-    for (j = 0; j < 2; j++)
-      cout << member[i][j] + " | ";
+    for (int j = 0; j < 2; j++)
+      cout << g_member[i][j] + " | ";
 
     cout << "\n";
   }
   cout << "\n";
+}
+
+void AddMember()
+{
+  string newMember[4], field[4] = {"Username", "Nama", "Alamat", "Email"};
+
+  for (int i = 0; i < 4; i++)
+  {
+    cout << field[i] + ": ";
+    cin >> newMember[i];
+
+    g_member[activeMember][i] = newMember[i];
+  }
+  activeMember++;
+  cout << "New member added! \n\n";
 }
 
 string noTransaksi(string tgl)

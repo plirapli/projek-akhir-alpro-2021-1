@@ -189,7 +189,6 @@ int main()
     else if (menuOption == '2')
     {
       // Initialize variable
-      char menuEnum;
       bool ulangiKasir = 1, isMember = 0;
       int indexBarang = invSize, inputQty, total = 0, paid;
       string inBuyDate, noTrans, inKodeBarang, inMember;
@@ -225,10 +224,10 @@ int main()
         }
         cout << "[0] Kembali \n"
              << "Pilih > ";
-        cin >> menuEnum;
+        cin >> menuOption;
 
         // Tambah Barang
-        if (menuEnum == '1')
+        if (menuOption == '1')
         {
           bool ulangiCari = 1;
 
@@ -258,9 +257,9 @@ int main()
                      << "Rp" << hargaBarang << ",-"
                      << "\n";
                 cout << "Lanjutkan (y/n)? ";
-                cin >> menuEnum;
+                cin >> menuOption;
 
-                if (menuEnum == 'y')
+                if (menuOption == 'y')
                 {
                   do
                   {
@@ -303,27 +302,27 @@ int main()
         else if (jmlCart > 0)
         {
           // Lihat keranjang
-          if (menuEnum == '2')
+          if (menuOption == '2')
           {
             cout << "Cart : \n";
             readCart(cartStr, cartInt, jmlCart, total);
           }
 
           // Next
-          else if (menuEnum == '4')
+          else if (menuOption == '4')
           {
             cout << "Cart : \n";
             readCart(cartStr, cartInt, jmlCart, total);
 
             cout << "Lanjutkan (y/n)? ";
-            cin >> menuEnum;
+            cin >> menuOption;
 
-            if (menuEnum == 'y')
+            if (menuOption == 'y')
             {
               cout << "Punya member (y/n)? ";
-              cin >> menuEnum;
+              cin >> menuOption;
 
-              if (menuEnum == 'y')
+              if (menuOption == 'y')
               {
                 do
                 {
@@ -386,7 +385,7 @@ int main()
           }
         }
 
-        else if (menuEnum == '0')
+        else if (menuOption == '0')
         {
           char kembali;
           cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";

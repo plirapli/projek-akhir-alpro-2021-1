@@ -127,6 +127,7 @@ int main()
          << "[2] KASIR \n"
          << "[3] LOG PENJUALAN \n"
          << "[4] CRM \n\n"
+
          << "[0] KELUAR \n"
          << "Pilih > ";
     cin >> menuOption;
@@ -191,8 +192,8 @@ int main()
     {
       // Initialize variable
       bool ulangiKasir = 1, isMember = 0;
-      int indexBarang = invSize, inputQty, total = 0, paid;
-      string inBuyDate, noTrans, inKodeBarang, inMember;
+      int index, inputQty, total = 0, paid;
+      string inBuyDate, noTrans, inKodeBarang;
 
       // Copy inv "stok"
       int copy_invStok[invSize];
@@ -240,16 +241,16 @@ int main()
             // Mengecek ketersediaan barang
             for (int i = 0; i < invSize; i++)
             {
-              indexBarang = (g_invKodeNama[i][0] == inKodeBarang) ? i : invSize;
-              if (indexBarang != invSize)
+              index = (g_invKodeNama[i][0] == inKodeBarang) ? i : invSize;
+              if (index != invSize)
                 break;
             }
 
-            if (indexBarang != invSize)
+            if (index != invSize)
             {
-              string namaBarang = g_invKodeNama[indexBarang][1];
-              int stok = copy_invStok[indexBarang];
-              int hargaBarang = g_invStokHarga[indexBarang][1];
+              string namaBarang = g_invKodeNama[index][1];
+              int stok = copy_invStok[index];
+              int hargaBarang = g_invStokHarga[index][1];
 
               if (stok > 0)
               {
@@ -280,7 +281,7 @@ int main()
                   cartInt[jmlCart][1] = hargaBarang;
                   cartInt[jmlCart][2] = totalHarga;
 
-                  copy_invStok[indexBarang] -= inputQty;
+                  copy_invStok[index] -= inputQty;
                   jmlCart++;
 
                   cout << "Added to cart! \n";
@@ -325,6 +326,8 @@ int main()
 
               if (menuOption == 'y')
               {
+                string inMember;
+
                 do
                 {
                   cout << "Masukkan kode member: ";
@@ -332,23 +335,24 @@ int main()
 
                   for (int i = 0; i < activeMember; i++)
                   {
-                    indexBarang = (g_member[i][0] == inMember) ? i : 20;
-                    if (indexBarang != 20)
+                    index = (g_member[i][0] == inMember) ? i : 20;
+                    if (index != 20)
                       break;
                   }
 
-                  if (indexBarang == 20)
+                  if (index == 20)
                     cout << "Member tidak ditemukan. \n";
 
-                } while (indexBarang == 20);
+                } while (index == 20);
 
-                cout << "[" + g_member[indexBarang][0] + "] " + g_member[indexBarang][1]
+                cout << "[" + g_member[index][0] + "] " + g_member[index][1]
                      << "\n\n";
                 isMember = 1;
               }
 
               readCart(cartStr, cartInt, jmlCart, total, isMember);
 
+              // Bayar
               do
               {
                 cout << "Bayar : Rp";
@@ -365,11 +369,19 @@ int main()
               for (int i = 0; i < invSize; i++)
                 g_invStokHarga[i][0] = copy_invStok[i];
 
+              // Masukkan pembelian ke db log penjualan (khusus member)
+              if (isMember == 1)
+              {
+                g_logPenjualanMember[index][logIndexMember[index]][0] = noTrans;
+                g_logPenjualanMember[index][logIndexMember[index]][1] = inBuyDate;
+                g_logHargaPenjualanMember[index][logIndexMember[index]] = total;
+                logIndexMember[index]++;
+              }
+
               // Masukkan pembelian ke db log penjualan
               logPenjualan[logIndex][0] = noTrans;
               logPenjualan[logIndex][1] = inBuyDate;
               logHargaPenjualan[logIndex] = total;
-
               logIndex++;
 
               // Nota Pembelian
@@ -518,6 +530,9 @@ int main()
 
     else if (menuOption == '0')
       ulangiMenu = 0;
+
+    else
+      cout << "Pilihan invalid! \n";
 
   } while (ulangiMenu == 1);
 

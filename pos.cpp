@@ -324,24 +324,17 @@ int main()
           // Hapus keranjang
           else if (menuOption == '3')
           {
+            int inNomor;
+            readCart();
+
             do
             {
-              cout << "Baris ke berapa yang ingin dihapus? > ";
-              cin >> inKodeBarang;
+              cout << "Masukkan nomor > ";
+              cin >> inNomor;
 
-              // Mencari kode barang
-              for (int i = 0; i < invSize; i++)
+              if (!(inNomor > jmlCart || inNomor <= 0))
               {
-                string kodeBarang = g_invKodeNama[i][0];
-
-                index = (kodeBarang == inKodeBarang) ? i : invSize;
-                if (index != invSize)
-                  break;
-              }
-
-              if (index != invSize)
-              {
-                for (int i = index; i < jmlCart; i++)
+                for (int i = inKodeBarang - 1; i < jmlCart; i++)
                 {
                   cartStr[i][0] = cartStr[i + 1][0];
                   cartStr[i][1] = cartStr[i + 1][1];

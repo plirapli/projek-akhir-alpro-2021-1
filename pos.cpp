@@ -325,7 +325,7 @@ int main()
           else if (menuOption == '3')
           {
             int inNomor;
-            readCart();
+            readCart(cartStr, cartInt, jmlCart, total);
 
             do
             {
@@ -334,7 +334,7 @@ int main()
 
               if (!(inNomor > jmlCart || inNomor <= 0))
               {
-                for (int i = inKodeBarang - 1; i < jmlCart; i++)
+                for (int i = inNomor - 1; i < jmlCart; i++)
                 {
                   cartStr[i][0] = cartStr[i + 1][0];
                   cartStr[i][1] = cartStr[i + 1][1];

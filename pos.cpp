@@ -84,38 +84,38 @@ int main()
   char menuOption;
   string admin;
 
-  // // Login
-  // do
-  // {
-  //   int indexUser = 2;
-  //   string username, passwd;
+  // Login
+  do
+  {
+    int indexUser = 2;
+    string username, passwd;
 
-  //   ulangiMenu = 1;
+    ulangiMenu = 1;
 
-  //   cout << "Login \n"
-  //        << "Username: ";
-  //   cin >> username;
-  //   cout << "Password: ";
-  //   cin >> passwd;
+    cout << "Login \n"
+         << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> passwd;
 
-  //   for (int i = 0; i < 2; i++)
-  //   {
-  //     indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
+    for (int i = 0; i < 2; i++)
+    {
+      indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
 
-  //     if (indexUser != 2)
-  //     {
-  //       admin = g_admin[indexUser][2];
-  //       ulangiMenu = 0;
-  //       break;
-  //     }
-  //   }
+      if (indexUser != 2)
+      {
+        admin = g_admin[indexUser][2];
+        ulangiMenu = 0;
+        break;
+      }
+    }
 
-  //   if (indexUser == 2)
-  //     cout << "Username atau Password anda salah! \n\n";
-  //   else
-  //     cout << "Selamat datang, " + admin + "! \n\n";
+    if (indexUser == 2)
+      cout << "Username atau Password anda salah! \n\n";
+    else
+      cout << "Selamat datang, " + admin + "! \n\n";
 
-  // } while (ulangiMenu == 1);
+  } while (ulangiMenu == 1);
 
   // Main Program
   do
@@ -205,7 +205,7 @@ int main()
       string cartStr[invSize][2];
       int cartInt[invSize][3];
 
-      cout << "Tanggal Transaksi (DD-MM-YY): ";
+      cout << "Tanggal Transaksi (DD-MM-YYYY): ";
       cin >> inBuyDate;
 
       noTrans = noTransaksi(inBuyDate);

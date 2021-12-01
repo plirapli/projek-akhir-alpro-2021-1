@@ -301,6 +301,17 @@ int main()
           } while (ulangiCari == 1);
         }
 
+        else if (menuOption == '0')
+        {
+          char kembali;
+          cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";
+          cin >> kembali;
+          if (kembali == 'y' || kembali == 'Y')
+            ulangiKasir = 0;
+          else
+            ulangiKasir = 1;
+        }
+
         else if (jmlCart > 0)
         {
           // Lihat keranjang
@@ -398,21 +409,6 @@ int main()
           }
         }
 
-        else if (menuOption == '0')
-        {
-          char kembali;
-          cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";
-          cin >> kembali;
-          if (kembali == 'y' || kembali == 'Y')
-          {
-            ulangiKasir = 0;
-          }
-          else
-          {
-            ulangiKasir = 1;
-          }
-        }
-
         else
           cout << "Pilihan tidak valid! \n";
 
@@ -455,10 +451,9 @@ int main()
 
       do
       {
-        ReadMembers();
-
-        cout << "[1] Tambah Member \n"
-             << "[2] Detail pengeluaran member \n"
+        cout << "[1] Lihat daftar member \n"
+             << "[2] Tambah Member \n"
+             << "[3] Detail pengeluaran member \n"
              << "[0] Kembali \n"
              << "Pilih > ";
         cin >> menuOption;
@@ -466,10 +461,14 @@ int main()
         switch (menuOption)
         {
         case '1':
-          AddMember();
+          ReadMembers();
           break;
 
         case '2':
+          AddMember();
+          break;
+
+        case '3':
         {
           int indexMember = activeMember, total = 0;
           string username;
@@ -641,6 +640,7 @@ void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
       colLength[0] = (dataLength > colLength[0]) ? dataLength : colLength[0];
     }
 
+    // Menjumlahkkan baris
     for (int i = 0; i < 4; i++)
       totalColLength += colLength[i];
 

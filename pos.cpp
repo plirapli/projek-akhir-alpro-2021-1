@@ -80,7 +80,7 @@ int main()
 {
   // Initialize Main Variable
   bool ulangiMenu;
-  int jmlCart = 0, logIndex = 0, logIndexMember[20];
+  int logIndex = 0, logIndexMember[20];
   char menuOption;
   string admin;
 
@@ -192,7 +192,7 @@ int main()
     {
       // Initialize variable
       bool ulangiKasir = 1, isMember = 0;
-      int index, inputQty, total = 0, paid;
+      int jmlCart = 0, index, inputQty, total = 0, paid;
       string inBuyDate, noTrans, inKodeBarang;
 
       // Copy inv "stok"

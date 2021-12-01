@@ -4,34 +4,22 @@
 
 using namespace std;
 
-// Menampilkan data inventaris
-void readDataInventaris();
+// Data Inventaris
+void ReadDataInventaris();             // Menampilkan data inventaris
+void ReadDataInvCopy(int invStok[]);   // Menampilkan data inv (copy)
+void UpdateStokBarang(string search);  // Mengubah stok
+void UpdateHargaBarang(string search); // Mengubah harga
+int FindInv(string kodeBarang);        // Mencari barang berdasarkan kode barang
 
-void readCopyInv(int invStok[]);
-
-// Mencari barang berdasarkan kode barang
-int FindInv(string kodeBarang);
-
+// KASIR
 // Menampilkan keranjang
 void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member = false);
+string NoTransaksi(string tgl); // Mengenerate kode transaksi
 
-// Menampilkan semua member
-void ReadMembers();
-
-// Menampilkan member
-void ReadMember(int index);
-
-// Menambahkan member baru
-void AddMember();
-
-// Mengubah stok
-void UpdateStokBarang(string search);
-
-// Mengubah harga
-void UpdateHargaBarang(string search);
-
-// Mengenerate kode transaksi
-string NoTransaksi(string tgl);
+// CRM
+void ReadMembers();         // Menampilkan semua member
+void ReadMember(int index); // Menampilkan member
+void AddMember();           // Menambahkan member baru
 
 // GLOBAL VARIABLES
 
@@ -87,38 +75,38 @@ int main()
   char menuOption;
   string admin;
 
-  // // Login
-  // do
-  // {
-  //   int indexUser = 2;
-  //   string username, passwd;
+  // Login
+  do
+  {
+    int indexUser = 2;
+    string username, passwd;
 
-  //   ulangiMenu = 1;
+    ulangiMenu = 1;
 
-  //   cout << "Login \n"
-  //        << "Username: ";
-  //   cin >> username;
-  //   cout << "Password: ";
-  //   cin >> passwd;
+    cout << "Login \n"
+         << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> passwd;
 
-  //   for (int i = 0; i < 2; i++)
-  //   {
-  //     indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
+    for (int i = 0; i < 2; i++)
+    {
+      indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
 
-  //     if (indexUser != 2)
-  //     {
-  //       admin = g_admin[indexUser][2];
-  //       ulangiMenu = 0;
-  //       break;
-  //     }
-  //   }
+      if (indexUser != 2)
+      {
+        admin = g_admin[indexUser][2];
+        ulangiMenu = 0;
+        break;
+      }
+    }
 
-  //   if (indexUser == 2)
-  //     cout << "Username atau Password anda salah! \n\n";
-  //   else
-  //     cout << "Selamat datang, " + admin + "! \n\n";
+    if (indexUser == 2)
+      cout << "Username atau Password anda salah! \n\n";
+    else
+      cout << "Selamat datang, " + admin + "! \n\n";
 
-  // } while (ulangiMenu == 1);
+  } while (ulangiMenu == 1);
 
   // Main Program
   do
@@ -146,7 +134,7 @@ int main()
         cout << "[1] Tampilkan Daftar Inventaris \n"
              << "[2] Ubah Stok \n"
              << "[3] Ubah harga \n"
-             << "[4] Exit \n"
+             << "[4] Kembali \n"
              << "Pilih > ";
         cin >> option;
         cin.ignore();
@@ -155,13 +143,13 @@ int main()
         {
         case '1':
           cout << "Daftar Barang : \n";
-          readDataInventaris();
+          ReadDataInventaris();
           cout << endl;
           option = '3';
           break;
 
         case '2':
-          readDataInventaris();
+          ReadDataInventaris();
           option = '3';
           cout << "\nSearch kode barang : ";
           getline(cin, kode);
@@ -169,7 +157,7 @@ int main()
           break;
 
         case '3':
-          readDataInventaris();
+          ReadDataInventaris();
           option = '3';
           cout << "\nSearch kode barang : ";
           getline(cin, kode);
@@ -217,7 +205,7 @@ int main()
 
       do
       {
-        readCopyInv(copy_invStok);
+        ReadDataInvCopy(copy_invStok);
         cout << "\n";
 
         cout << "[1] Tambah Barang \n";
@@ -301,13 +289,9 @@ int main()
 
         else if (menuOption == '0')
         {
-          char kembali;
           cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";
-          cin >> kembali;
-          if (kembali == 'y' || kembali == 'Y')
-            ulangiKasir = 0;
-          else
-            ulangiKasir = 1;
+          cin >> menuOption;
+          ulangiKasir = (menuOption == 'y' || menuOption == 'Y') ? 0 : 1;
         }
 
         else if (jmlCart > 0)
@@ -337,6 +321,7 @@ int main()
                 index = FindInv(cartStr[inNomor - 1][0]);
                 copy_invStok[index] += cartInt[inNomor - 1][0];
 
+                // Menaikkan baris
                 for (int i = inNomor - 1; i < jmlCart; i++)
                 {
                   cartStr[i][0] = cartStr[i + 1][0];
@@ -573,7 +558,7 @@ int main()
   return 0;
 }
 
-void readDataInventaris()
+void ReadDataInventaris()
 {
   int jmlGaris = 70;
 
@@ -589,29 +574,52 @@ void readDataInventaris()
   cout << setfill(' ') << "\n";
   for (int i = 0; i < invSize; i++)
   {
+    string kode = g_invKodeNama[i][0];
+    string nama = g_invKodeNama[i][1];
+    int stok = g_invStokHarga[i][0];
+    int harga = g_invStokHarga[i][1];
+
     cout << left
-         << "| " << setw(15) << g_invKodeNama[i][0]
-         << "| " << setw(25) << g_invKodeNama[i][1]
-         << "| " << setw(10) << g_invStokHarga[i][0]
-         << "| " << right << setw(10) << g_invStokHarga[i][1];
+         << "| " << setw(15) << kode
+         << "| " << setw(25) << nama
+         << "| " << setw(10) << stok
+         << "| " << right << setw(10) << harga;
     cout << "|\n";
   }
   cout << "+" << setfill('-') << setw(jmlGaris) << "+ \n";
   setfill(' ');
 }
 
-void readCopyInv(int invStok[])
+void ReadDataInvCopy(int invStok[])
 {
+  int jmlGaris = 70;
+
+  cout << "+" << setfill('-') << setw(jmlGaris) << "+ \n";
+  cout << setfill(' ') << left
+       << "| " << setw(15) << "Kode Barang"
+       << "| " << setw(25) << "Nama Barang"
+       << "| " << setw(10) << "Stok"
+       << "| " << setw(10) << "Harga"
+       << "|";
+  cout << setfill('-') << setw(jmlGaris) << "\n";
+
+  cout << setfill(' ') << "\n";
   for (int i = 0; i < invSize; i++)
   {
-    for (int j = 0; j < 2; j++)
-      cout << g_invKodeNama[i][j] + " - ";
+    string kode = g_invKodeNama[i][0];
+    string nama = g_invKodeNama[i][1];
+    int stok = invStok[i];
+    int harga = g_invStokHarga[i][1];
 
-    cout << invStok[i] << " - "
-         << g_invStokHarga[i][1];
-
-    cout << "\n";
+    cout << left
+         << "| " << setw(15) << kode
+         << "| " << setw(25) << nama
+         << "| " << setw(10) << stok
+         << "| " << right << setw(10) << harga;
+    cout << "|\n";
   }
+  cout << "+" << setfill('-') << setw(jmlGaris) << "+ \n";
+  setfill(' ');
 }
 
 int FindInv(string kodeBarang)

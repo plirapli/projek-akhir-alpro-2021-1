@@ -321,6 +321,42 @@ int main()
             readCart(cartStr, cartInt, jmlCart, total);
           }
 
+          // Hapus keranjang
+          else if (menuOption == '3')
+          {
+            do
+            {
+              cout << "Baris ke berapa yang ingin dihapus? > ";
+              cin >> inKodeBarang;
+
+              // Mencari kode barang
+              for (int i = 0; i < invSize; i++)
+              {
+                string kodeBarang = g_invKodeNama[i][0];
+
+                index = (kodeBarang == inKodeBarang) ? i : invSize;
+                if (index != invSize)
+                  break;
+              }
+
+              if (index != invSize)
+              {
+                for (int i = index; i < jmlCart; i++)
+                {
+                  cartStr[i][0] = cartStr[i + 1][0];
+                  cartStr[i][1] = cartStr[i + 1][1];
+                  cartInt[i][0] = cartInt[i + 1][0];
+                  cartInt[i][1] = cartInt[i + 1][1];
+                  cartInt[i][2] = cartInt[i + 1][2];
+                }
+                jmlCart--;
+                cout << "Barang telah dihapus \n";
+              }
+              else
+                cout << "Barang tidak ditemukan \n";
+            } while (index == invSize);
+          }
+
           // Next
           else if (menuOption == '4')
           {

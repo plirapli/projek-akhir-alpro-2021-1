@@ -9,8 +9,11 @@ void readDataInventaris();
 
 void readCopyInv(int invStok[]);
 
+// Mencari barang berdasarkan kode barang
+int FindInv(string kodeBarang);
+
 // Menampilkan keranjang
-void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member = false);
+void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member = false);
 
 // Menampilkan semua member
 void ReadMembers();
@@ -28,7 +31,7 @@ void UpdateStokBarang(string search);
 void UpdateHargaBarang(string search);
 
 // Mengenerate kode transaksi
-string noTransaksi(string tgl);
+string NoTransaksi(string tgl);
 
 // GLOBAL VARIABLES
 
@@ -84,38 +87,38 @@ int main()
   char menuOption;
   string admin;
 
-  // Login
-  do
-  {
-    int indexUser = 2;
-    string username, passwd;
+  // // Login
+  // do
+  // {
+  //   int indexUser = 2;
+  //   string username, passwd;
 
-    ulangiMenu = 1;
+  //   ulangiMenu = 1;
 
-    cout << "Login \n"
-         << "Username: ";
-    cin >> username;
-    cout << "Password: ";
-    cin >> passwd;
+  //   cout << "Login \n"
+  //        << "Username: ";
+  //   cin >> username;
+  //   cout << "Password: ";
+  //   cin >> passwd;
 
-    for (int i = 0; i < 2; i++)
-    {
-      indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
+  //   for (int i = 0; i < 2; i++)
+  //   {
+  //     indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
 
-      if (indexUser != 2)
-      {
-        admin = g_admin[indexUser][2];
-        ulangiMenu = 0;
-        break;
-      }
-    }
+  //     if (indexUser != 2)
+  //     {
+  //       admin = g_admin[indexUser][2];
+  //       ulangiMenu = 0;
+  //       break;
+  //     }
+  //   }
 
-    if (indexUser == 2)
-      cout << "Username atau Password anda salah! \n\n";
-    else
-      cout << "Selamat datang, " + admin + "! \n\n";
+  //   if (indexUser == 2)
+  //     cout << "Username atau Password anda salah! \n\n";
+  //   else
+  //     cout << "Selamat datang, " + admin + "! \n\n";
 
-  } while (ulangiMenu == 1);
+  // } while (ulangiMenu == 1);
 
   // Main Program
   do
@@ -208,7 +211,7 @@ int main()
       cout << "Tanggal Transaksi (DD-MM-YYYY): ";
       cin >> inBuyDate;
 
-      noTrans = noTransaksi(inBuyDate);
+      noTrans = NoTransaksi(inBuyDate);
 
       cout << "\n";
 
@@ -239,12 +242,7 @@ int main()
             cin >> inKodeBarang;
 
             // Mengecek ketersediaan barang
-            for (int i = 0; i < invSize; i++)
-            {
-              index = (g_invKodeNama[i][0] == inKodeBarang) ? i : invSize;
-              if (index != invSize)
-                break;
-            }
+            index = FindInv(inKodeBarang);
 
             if (index != invSize)
             {
@@ -318,14 +316,15 @@ int main()
           if (menuOption == '2')
           {
             cout << "Cart : \n";
-            readCart(cartStr, cartInt, jmlCart, total);
+            ReadCart(cartStr, cartInt, jmlCart, total);
           }
 
           // Hapus keranjang
           else if (menuOption == '3')
           {
+            bool ulangiHapus = 1;
             int inNomor;
-            readCart(cartStr, cartInt, jmlCart, total);
+            ReadCart(cartStr, cartInt, jmlCart, total);
 
             do
             {
@@ -334,6 +333,10 @@ int main()
 
               if (!(inNomor > jmlCart || inNomor <= 0))
               {
+                // Menambah stok barang yang telah dihapus
+                index = FindInv(cartStr[inNomor - 1][0]);
+                copy_invStok[index] += cartInt[inNomor - 1][0];
+
                 for (int i = inNomor - 1; i < jmlCart; i++)
                 {
                   cartStr[i][0] = cartStr[i + 1][0];
@@ -343,18 +346,20 @@ int main()
                   cartInt[i][2] = cartInt[i + 1][2];
                 }
                 jmlCart--;
+
                 cout << "Barang telah dihapus \n";
+                ulangiHapus = 0;
               }
               else
                 cout << "Barang tidak ditemukan \n";
-            } while (!(inNomor > jmlCart || inNomor <= 0));
+            } while (ulangiHapus == 1);
           }
 
           // Next
           else if (menuOption == '4')
           {
             cout << "Cart : \n";
-            readCart(cartStr, cartInt, jmlCart, total);
+            ReadCart(cartStr, cartInt, jmlCart, total);
 
             cout << "Lanjutkan (y/n)? ";
             cin >> menuOption;
@@ -390,7 +395,7 @@ int main()
                 isMember = 1;
               }
 
-              readCart(cartStr, cartInt, jmlCart, total, isMember);
+              ReadCart(cartStr, cartInt, jmlCart, total, isMember);
 
               // Bayar
               do
@@ -427,7 +432,7 @@ int main()
               // Nota Pembelian
               cout << "No. Transaksi : " + noTrans + "\n"
                    << "Kasir : " + admin + "\n";
-              readCart(cartStr, cartInt, jmlCart, total, isMember);
+              ReadCart(cartStr, cartInt, jmlCart, total, isMember);
               cout << "Bayar : Rp" << paid << "\n"
                    << "Kembali : Rp" << change << "\n\n";
 
@@ -609,6 +614,18 @@ void readCopyInv(int invStok[])
   }
 }
 
+int FindInv(string kodeBarang)
+{
+  int index;
+  for (int i = 0; i < invSize; i++)
+  {
+    index = (kodeBarang == g_invKodeNama[i][0]) ? i : invSize;
+    if (index != invSize)
+      break;
+  }
+  return index;
+}
+
 void UpdateStokBarang(string search)
 {
   int stok[5];
@@ -654,55 +671,59 @@ void UpdateHargaBarang(string search)
   }
 }
 
-void readCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member)
+void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member)
 {
   if (jml == 0)
     cout << "Keranjang masih kosong. \n";
   else
   {
-    // Mencari jumlah kata terbanyak di field Nama barang
-    int totalColLength = 0, colLength[4] = {14, 12, 5, 10};
+    string field[5] = {"No", "Barang", "Harga", "Qty", "Total"};
+    int totalColLength = 0, colLength[5] = {4, 14, 12, 5, 12};
+    total = 0;
 
+    // Fungsi menampilkan garis
+    auto garis = [](int totalLength)
+    {
+      for (int i = 0; i < totalLength; i++)
+        cout << "-";
+      cout << "\n";
+    };
+
+    // Mencari jumlah kata terbanyak di field Nama barang
     for (int i = 0; i < jml; i++)
     {
       int dataLength = cartStr[i][1].length() + 9;
-      colLength[0] = (dataLength > colLength[0]) ? dataLength : colLength[0];
+      colLength[1] = (dataLength > colLength[1]) ? dataLength : colLength[1];
     }
 
     // Menjumlahkkan baris
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
       totalColLength += colLength[i];
 
     // Menampilkan Cart
-    total = 0;
-    string field[4] = {"Barang", "Harga", "Qty", "Total"};
+    garis(totalColLength);
 
-    for (int i = 0; i < totalColLength; i++)
-      cout << "-";
-    cout << "\n";
-
-    for (int i = 0; i < 4; i++)
+    // Kolom
+    for (int i = 0; i < 5; i++)
       cout << left << setw(colLength[i]) << field[i];
     cout << "\n";
 
-    for (int i = 0; i < totalColLength; i++)
-      cout << "-";
-    cout << "\n";
+    garis(totalColLength);
 
+    // Isi Keranjang
     for (int i = 0; i < jml; i++)
     {
-      cout << left << setw(colLength[0]) << cartStr[i][1] + " (" + cartStr[i][0] + ") "
-           << "Rp" << setw(colLength[1] - 2) << cartInt[i][1]
-           << setw(colLength[2]) << cartInt[i][0]
+      cout << left << setw(colLength[0]) << i + 1
+           << setw(colLength[1]) << cartStr[i][1] + " (" + cartStr[i][0] + ") "
+           << "Rp" << setw(colLength[2] - 2) << cartInt[i][1]
+           << setw(colLength[3]) << cartInt[i][0]
            << "Rp" << cartInt[i][2];
       total += cartInt[i][2];
 
       cout << "\n";
     }
 
-    for (int i = 0; i < totalColLength; i++)
-      cout << "-";
-    cout << "\n";
+    garis(totalColLength);
 
     if (member == 1)
     {
@@ -761,7 +782,7 @@ void ReadMember(int index)
        << "Email \t : " + member[3] + "\n\n";
 }
 
-string noTransaksi(string tgl)
+string NoTransaksi(string tgl)
 {
   char tanggal[] = {tgl[0], tgl[1], tgl[3], tgl[4], tgl[6], tgl[7], '\0'};
   char angka[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};

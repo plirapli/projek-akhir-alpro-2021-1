@@ -347,7 +347,7 @@ int main()
               }
               else
                 cout << "Barang tidak ditemukan \n";
-            } while (index == invSize);
+            } while (!(inNomor > jmlCart || inNomor <= 0));
           }
 
           // Next

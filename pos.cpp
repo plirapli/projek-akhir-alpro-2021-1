@@ -1,35 +1,43 @@
 #include <iostream>
+#include <conio.h>
 #include <iomanip>
+#include <stdlib.h>
 #include <string>
 
 using namespace std;
 
-// Data Inventaris
+// 🏢 DATA INVENTARIS
 void ReadDataInventaris();             // Menampilkan data inventaris
 void ReadDataInvCopy(int invStok[]);   // Menampilkan data inv (copy)
 void UpdateStokBarang(string search);  // Mengubah stok
 void UpdateHargaBarang(string search); // Mengubah harga
 int FindInv(string kodeBarang);        // Mencari barang berdasarkan kode barang
 
-// KASIR
+// 💰 KASIR
 // Menampilkan keranjang
 void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool member = false);
 string NoTransaksi(string tgl); // Mengenerate kode transaksi
 
-// CRM
+// 📝 LOG PENJUALAN
+void ReadTransaction(int logIndex); // Menampilkan riwayat transaksi
+
+// 🙋🏼‍♂️ CRM
 void ReadMembers();         // Menampilkan semua member
 void ReadMember(int index); // Menampilkan member
 void AddMember();           // Menambahkan member baru
 
-// GLOBAL VARIABLES
+// ⚪ MISC
+void PressAnyKey(); // Print "press any key" 😅
 
-// Data Admin
+// 🌏 GLOBAL VARIABLES
+
+// DATA ADMIN
 string g_admin[2][3] = {
     {"mrafli", "123210078", "Rafli"},
     {"desyna", "123210083", "Desy"}};
 
-// Data Inventaris
-// 1. Kode dan Nama
+// DATA INV
+// Kode & Nama
 string g_invKodeNama[6][2] = {
     {"00A1", "Printer Canon Ip 700"},
     {"00A2", "Laptop Acer"},
@@ -39,7 +47,7 @@ string g_invKodeNama[6][2] = {
     {"00B2", "Printer Epson Stylus"},
 };
 
-// 2. Stok dan Harga
+// Stok & Harga
 int g_invStokHarga[6][2] = {
     {20, 550000},
     {42, 800000},
@@ -49,7 +57,9 @@ int g_invStokHarga[6][2] = {
     {1, 2800000},
 };
 
-// Data Member
+int invSize = 6; // Index Data Inv
+
+// DATA MEMBER
 string g_member[20][4] = {
     {"yoojung_simp", "Seva Giantama", "Temanggung", "seva@dummy.com"},
     {"shazi_senpai", "Shazi Awaludin", "Cikarang", "shazi@dummy.com"},
@@ -57,15 +67,15 @@ string g_member[20][4] = {
     {"nurlumos", "Heri Nur Cahyana", "Singapore", "lumosmaxima@dummy.com"},
 };
 
-// Data Penjualan
+int activeMember = 4; // Jumlah member aktif
+
+// DATA PENJUALAN
 string logPenjualan[50][2];
 int logHargaPenjualan[50];
 
-// Data Penjualan Member
+// DATA PENJUALAN MEMBER
 string g_logPenjualanMember[20][50][2];
 int g_logHargaPenjualanMember[20][50];
-
-int invSize = 6, activeMember = 4;
 
 int main()
 {
@@ -78,7 +88,7 @@ int main()
   // Login
   do
   {
-    int indexUser = 2;
+    int indexUser;
     string username, passwd;
 
     ulangiMenu = 1;
@@ -104,7 +114,10 @@ int main()
     if (indexUser == 2)
       cout << "Username atau Password anda salah! \n\n";
     else
+    {
+      system("CLS");
       cout << "Selamat datang, " + admin + "! \n\n";
+    }
 
   } while (ulangiMenu == 1);
 
@@ -113,15 +126,15 @@ int main()
   {
     ulangiMenu = 1;
 
-    cout << "MENU \n"
+    cout << "MAIN MENU \n"
          << "[1] INVENTARIS \n"
          << "[2] KASIR \n"
          << "[3] LOG PENJUALAN \n"
          << "[4] CRM \n\n"
-
          << "[0] KELUAR \n"
          << "Pilih > ";
     cin >> menuOption;
+    system("CLS");
 
     // FITUR INVENTARIS
     if (menuOption == '1')
@@ -131,13 +144,15 @@ int main()
 
       do
       {
-        cout << "[1] Tampilkan Daftar Inventaris \n"
+        cout << "Menu Inventaris \n"
+             << "[1] Tampilkan Daftar Inventaris \n"
              << "[2] Ubah Stok \n"
              << "[3] Ubah harga \n"
-             << "[4] Kembali \n"
+             << "[0] Kembali \n"
              << "Pilih > ";
         cin >> option;
         cin.ignore();
+        system("CLS");
 
         switch (option)
         {
@@ -145,37 +160,30 @@ int main()
           cout << "Daftar Barang : \n";
           ReadDataInventaris();
           cout << endl;
-          option = '3';
           break;
 
         case '2':
           ReadDataInventaris();
-          option = '3';
-          cout << "\nSearch kode barang : ";
+          cout << "Search kode barang : ";
           getline(cin, kode);
           UpdateStokBarang(kode);
           break;
 
         case '3':
           ReadDataInventaris();
-          option = '3';
-          cout << "\nSearch kode barang : ";
+          cout << "Search kode barang : ";
           getline(cin, kode);
           UpdateHargaBarang(kode);
           break;
 
-        case '4':
-          option = '0';
+        case '0':
           break;
 
         default:
-          option = '3';
           cout << "Pilihan tidak valid \n";
           break;
         }
-      } while (option == '3');
-
-      cout << "Terima Kasih \n\n";
+      } while (option != '0');
     }
 
     // FITUR KASIR
@@ -439,29 +447,7 @@ int main()
 
     // FITUR LAPORAN PENJUALAN
     else if (menuOption == '3')
-    {
-      // Initialize var
-      int total = 0;
-
-      cout << "Riwayat Penjualan : \n";
-
-      if (logIndex > 0)
-      {
-        for (int i = 0; i < logIndex; i++)
-        {
-          cout << "[" + logPenjualan[i][1] + "] "
-               << "#" + logPenjualan[i][0] + " "
-               << "Rp" << logHargaPenjualan[i] << "\n";
-          total += logHargaPenjualan[i];
-        }
-      }
-      else
-        cout << "- \n";
-
-      cout << "\n"
-           << "Total : Rp" << total
-           << "\n\n";
-    }
+      ReadTransaction(logIndex);
 
     // FITUR CRM
     else if (menuOption == '4')
@@ -470,7 +456,8 @@ int main()
 
       do
       {
-        cout << "[1] Lihat daftar member \n"
+        cout << "Customer Releationship Management (CRM) \n"
+             << "[1] Lihat daftar member \n"
              << "[2] Tambah Member \n"
              << "[3] Detail pengeluaran member \n"
              << "[0] Kembali \n"
@@ -480,18 +467,23 @@ int main()
         switch (menuOption)
         {
         case '1':
+          system("CLS");
           ReadMembers();
           break;
 
         case '2':
+          system("CLS");
+          ReadMembers();
           AddMember();
           break;
 
         case '3':
         {
           int indexMember = activeMember, total = 0;
-          string username;
+          string username, nama;
 
+          system("CLS");
+          cout << "Detail pengeluaran member \n";
           do
           {
             cout << "Masukkan username: ";
@@ -502,13 +494,16 @@ int main()
               indexMember = ((g_member[i][0] == username)) ? i : activeMember;
 
               if (indexMember != activeMember)
+              {
+                nama = g_member[indexMember][1];
+                system("CLS");
                 break;
+              }
             }
           } while (indexMember == activeMember);
 
           ReadMember(indexMember);
-
-          cout << "Riwayat Pengeluaran : \n";
+          cout << "Riwayat Pengeluaran " + nama + " : \n";
 
           if (logIndexMember[indexMember] > 0)
           {
@@ -523,26 +518,26 @@ int main()
                    << "Rp" << hargaTransaksi << "\n";
               total += hargaTransaksi;
             }
+            cout << "\n";
           }
           else
             cout << "- \n";
 
-          cout << "\n";
-          cout << "Total : Rp" << total << "\n";
+          cout << "Total : Rp" << total << "\n\n";
+          PressAnyKey();
 
           break;
         }
 
         case '0':
-          cout << "Kembali. \n";
+          system("CLS");
           ulangiCRM = 0;
           break;
 
         default:
-          cout << "Pilihan invalid! \n";
+          cout << "Pilihan invalid! \n\n";
           break;
         }
-        cout << "\n";
       } while (ulangiCRM == 1);
     }
 
@@ -651,8 +646,8 @@ void UpdateStokBarang(string search)
 
       g_invStokHarga[x][0] = stok[x];
 
-      cout << "Update successfull. \n";
-      break;
+      cout << "Update berhasil. \n\n";
+      PressAnyKey();
     }
   }
 }
@@ -748,12 +743,37 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
   }
 }
 
+void ReadTransaction(int logIndex)
+{
+  int total = 0;
+
+  cout << "Riwayat Penjualan : \n";
+
+  if (logIndex > 0)
+  {
+    for (int i = 0; i < logIndex; i++)
+    {
+      cout << "[" + logPenjualan[i][1] + "] "
+           << "#" + logPenjualan[i][0] + " "
+           << "Rp" << logHargaPenjualan[i] << "\n";
+      total += logHargaPenjualan[i];
+    }
+    cout << "\n";
+  }
+  else
+    cout << "- \n\n";
+
+  cout << "Total : Rp" << total << "\n\n";
+  PressAnyKey();
+}
+
 void ReadMembers()
 {
+  cout << "Daftar Member : \n";
   for (int i = 0; i < activeMember; i++)
   {
     cout << "| " << i + 1 << " | ";
-    for (int j = 0; j < 4; j++)
+    for (int j = 0; j < 2; j++)
       cout << g_member[i][j] + " | ";
 
     cout << "\n";
@@ -765,15 +785,19 @@ void AddMember()
 {
   string newMember[4], field[4] = {"Username", "Nama", "Alamat", "Email"};
 
+  cout << "Menambahkan member baru \n";
+  cin.ignore();
+
   for (int i = 0; i < 4; i++)
   {
     cout << field[i] + ": ";
-    cin >> newMember[i];
+    getline(cin, newMember[i]);
 
     g_member[activeMember][i] = newMember[i];
   }
   activeMember++;
   cout << "New member added! \n\n";
+  PressAnyKey();
 }
 
 void ReadMember(int index)
@@ -802,4 +826,11 @@ string NoTransaksi(string tgl)
     res += angka[rand() % 10];
 
   return kodeTgl + res;
+}
+
+void PressAnyKey()
+{
+  cout << "[Press any key to continue.]";
+  getch();
+  system("CLS");
 }

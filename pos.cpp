@@ -29,7 +29,7 @@ void AddMember();                                                     // Menamba
 void ReadMemberTransaction(int indexMember, int logIndex);            // Menampilkan transaksi member
 
 // ⚪ MISC
-void Garis(int length); // Fungsi generate garis
+void Garis(int length); // Generate garis
 void PressAnyKey();     // Print "press any key" 😅
 
 // 🌏 GLOBAL VARIABLES
@@ -544,6 +544,8 @@ int main()
   } while (ulangiMenu == 1);
 
   cout << "Terima Kasih. \n";
+  PressAnyKey();
+
   return 0;
 }
 

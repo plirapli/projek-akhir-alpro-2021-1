@@ -11,7 +11,7 @@ void ReadDataInventaris();             // Menampilkan data inventaris
 void ReadDataInvCopy(int invStok[]);   // Menampilkan data inv (copy)
 void UpdateStokBarang(string search);  // Mengubah stok
 void UpdateHargaBarang(string search); // Mengubah harga
-int FindInv(string kodeBarang);        // Mencari barang berdasarkan kode barang
+int FindInv(string kodeBarang);        // Mencari barang based on kode barang
 
 // 💰 KASIR
 // Menampilkan keranjang
@@ -22,22 +22,22 @@ string NoTransaksi(string tgl); // Mengenerate kode transaksi
 void ReadTransaction(int logIndex); // Menampilkan riwayat transaksi
 
 // 🙋🏼‍♂️ CRM
-void ReadMembers();         // Menampilkan semua member
-void ReadMember(int index); // Menampilkan member
-void AddMember();           // Menambahkan member baru
+void ReadMembers();                                                   // Menampilkan semua member
+void ReadMember(int index);                                           // Menampilkan member
+int FindMember(string uname, string msg = "Member tidak ditemukan!"); // Mencari member berdasarkan uname
+void AddMember();                                                     // Menambahkan member baru
+void ReadMemberTransaction(int indexMember, int logIndex);            // Menampilkan transaksi member
 
 // ⚪ MISC
 void PressAnyKey(); // Print "press any key" 😅
 
 // 🌏 GLOBAL VARIABLES
-
-// DATA ADMIN
+// 👨🏼‍💼 DATA ADMIN
 string g_admin[2][3] = {
     {"mrafli", "123210078", "Rafli"},
     {"desyna", "123210083", "Desy"}};
 
-// DATA INV
-// Kode & Nama
+// 🏢 DATA INV
 string g_invKodeNama[6][2] = {
     {"00A1", "Printer Canon Ip 700"},
     {"00A2", "Laptop Acer"},
@@ -46,8 +46,6 @@ string g_invKodeNama[6][2] = {
     {"00B1", "Notebook Asus"},
     {"00B2", "Printer Epson Stylus"},
 };
-
-// Stok & Harga
 int g_invStokHarga[6][2] = {
     {20, 550000},
     {42, 800000},
@@ -56,24 +54,22 @@ int g_invStokHarga[6][2] = {
     {0, 3000000},
     {1, 2800000},
 };
-
 int invSize = 6; // Index Data Inv
 
-// DATA MEMBER
+// 👫 DATA MEMBER
 string g_member[20][4] = {
     {"yoojung_simp", "Seva Giantama", "Temanggung", "seva@dummy.com"},
     {"shazi_senpai", "Shazi Awaludin", "Cikarang", "shazi@dummy.com"},
     {"cici_sunbae", "Cici Yuriza", "Bengkulu", "cici@dummy.com"},
     {"nurlumos", "Heri Nur Cahyana", "Singapore", "lumosmaxima@dummy.com"},
 };
-
 int activeMember = 4; // Jumlah member aktif
 
-// DATA PENJUALAN
+// 📝 DATA PENJUALAN
 string logPenjualan[50][2];
 int logHargaPenjualan[50];
 
-// DATA PENJUALAN MEMBER
+// 📝👫 DATA PENJUALAN MEMBER
 string g_logPenjualanMember[20][50][2];
 int g_logHargaPenjualanMember[20][50];
 
@@ -85,41 +81,41 @@ int main()
   char menuOption;
   string admin;
 
-  // Login
-  do
-  {
-    int indexUser;
-    string username, passwd;
+  // // Login
+  // do
+  // {
+  //   int indexUser;
+  //   string username, passwd;
 
-    ulangiMenu = 1;
+  //   ulangiMenu = 1;
 
-    cout << "Login \n"
-         << "Username: ";
-    cin >> username;
-    cout << "Password: ";
-    cin >> passwd;
+  //   cout << "Login \n"
+  //        << "Username: ";
+  //   cin >> username;
+  //   cout << "Password: ";
+  //   cin >> passwd;
 
-    for (int i = 0; i < 2; i++)
-    {
-      indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
+  //   for (int i = 0; i < 2; i++)
+  //   {
+  //     indexUser = ((g_admin[i][0] == username) && (g_admin[i][1] == passwd)) ? i : 2;
 
-      if (indexUser != 2)
-      {
-        admin = g_admin[indexUser][2];
-        ulangiMenu = 0;
-        break;
-      }
-    }
+  //     if (indexUser != 2)
+  //     {
+  //       admin = g_admin[indexUser][2];
+  //       ulangiMenu = 0;
+  //       break;
+  //     }
+  //   }
 
-    if (indexUser == 2)
-      cout << "Username atau Password anda salah! \n\n";
-    else
-    {
-      system("CLS");
-      cout << "Selamat datang, " + admin + "! \n\n";
-    }
+  //   if (indexUser == 2)
+  //     cout << "Username atau Password anda salah! \n\n";
+  //   else
+  //   {
+  //     system("CLS");
+  //     cout << "Selamat datang, " + admin + "! \n\n";
+  //   }
 
-  } while (ulangiMenu == 1);
+  // } while (ulangiMenu == 1);
 
   // Main Program
   do
@@ -191,12 +187,11 @@ int main()
     {
       // Initialize variable
       bool ulangiKasir = 1, isMember = 0;
-      int jmlCart = 0, index, inputQty, total = 0, paid;
+      int jmlCart = 0, inputQty, total = 0, paid;
       string inBuyDate, noTrans, inKodeBarang;
 
       // Copy inv "stok"
       int copy_invStok[invSize];
-
       for (int i = 0; i < invSize; i++)
         copy_invStok[i] = g_invStokHarga[i][0];
 
@@ -204,12 +199,12 @@ int main()
       string cartStr[invSize][2];
       int cartInt[invSize][3];
 
-      cout << "Tanggal Transaksi (DD-MM-YYYY): ";
+      cout << "Kasir \n"
+           << "Tanggal Transaksi (DD-MM-YYYY): ";
       cin >> inBuyDate;
+      cout << "\n";
 
       noTrans = NoTransaksi(inBuyDate);
-
-      cout << "\n";
 
       do
       {
@@ -231,6 +226,7 @@ int main()
         if (menuOption == '1')
         {
           bool ulangiCari = 1;
+          int indexBarang;
 
           do
           {
@@ -238,13 +234,13 @@ int main()
             cin >> inKodeBarang;
 
             // Mengecek ketersediaan barang
-            index = FindInv(inKodeBarang);
+            indexBarang = FindInv(inKodeBarang);
 
-            if (index != invSize)
+            if (indexBarang != invSize)
             {
-              string namaBarang = g_invKodeNama[index][1];
-              int stok = copy_invStok[index];
-              int hargaBarang = g_invStokHarga[index][1];
+              string namaBarang = g_invKodeNama[indexBarang][1];
+              int stok = copy_invStok[indexBarang];
+              int hargaBarang = g_invStokHarga[indexBarang][1];
 
               if (stok > 0)
               {
@@ -275,7 +271,7 @@ int main()
                   cartInt[jmlCart][1] = hargaBarang;
                   cartInt[jmlCart][2] = totalHarga;
 
-                  copy_invStok[index] -= inputQty;
+                  copy_invStok[indexBarang] -= inputQty;
                   jmlCart++;
 
                   cout << "Added to cart! \n";
@@ -315,7 +311,7 @@ int main()
           else if (menuOption == '3')
           {
             bool ulangiHapus = 1;
-            int inNomor;
+            int inNomor, indexBarang;
             ReadCart(cartStr, cartInt, jmlCart, total);
 
             do
@@ -326,8 +322,8 @@ int main()
               if (!(inNomor > jmlCart || inNomor <= 0))
               {
                 // Menambah stok barang yang telah dihapus
-                index = FindInv(cartStr[inNomor - 1][0]);
-                copy_invStok[index] += cartInt[inNomor - 1][0];
+                indexBarang = FindInv(cartStr[inNomor - 1][0]);
+                copy_invStok[indexBarang] += cartInt[inNomor - 1][0];
 
                 // Menaikkan baris
                 for (int i = inNomor - 1; i < jmlCart; i++)
@@ -359,32 +355,28 @@ int main()
 
             if (menuOption == 'y')
             {
+              int indexMember;
+              string username, name;
+
               cout << "Punya member (y/n)? ";
               cin >> menuOption;
 
               if (menuOption == 'y')
               {
-                string inMember;
+                string inUname;
 
                 do
                 {
-                  cout << "Masukkan kode member: ";
-                  cin >> inMember;
+                  cout << "Masukkan username: ";
+                  cin >> inUname;
 
-                  for (int i = 0; i < activeMember; i++)
-                  {
-                    index = (g_member[i][0] == inMember) ? i : 20;
-                    if (index != 20)
-                      break;
-                  }
+                  indexMember = FindMember(inUname);
+                } while (indexMember == activeMember);
 
-                  if (index == 20)
-                    cout << "Member tidak ditemukan. \n";
+                username = g_member[indexMember][0];
+                name = g_member[indexMember][1];
 
-                } while (index == 20);
-
-                cout << "[" + g_member[index][0] + "] " + g_member[index][1]
-                     << "\n\n";
+                cout << "[" + username + "] " + name << "\n\n";
                 isMember = 1;
               }
 
@@ -410,6 +402,8 @@ int main()
               // Masukkan pembelian ke db log penjualan (khusus member)
               if (isMember == 1)
               {
+                int index = indexMember;
+
                 g_logPenjualanMember[index][logIndexMember[index]][0] = noTrans;
                 g_logPenjualanMember[index][logIndexMember[index]][1] = inBuyDate;
                 g_logHargaPenjualanMember[index][logIndexMember[index]] = total;
@@ -479,53 +473,24 @@ int main()
 
         case '3':
         {
-          int indexMember = activeMember, total = 0;
-          string username, nama;
+          int indexMember;
+          string username;
 
           system("CLS");
           cout << "Detail pengeluaran member \n";
+
           do
           {
             cout << "Masukkan username: ";
             cin >> username;
 
-            for (int i = 0; i < activeMember; i++)
-            {
-              indexMember = ((g_member[i][0] == username)) ? i : activeMember;
+            indexMember = FindMember(username);
 
-              if (indexMember != activeMember)
-              {
-                nama = g_member[indexMember][1];
-                system("CLS");
-                break;
-              }
-            }
           } while (indexMember == activeMember);
+          system("CLS");
 
           ReadMember(indexMember);
-          cout << "Riwayat Pengeluaran " + nama + " : \n";
-
-          if (logIndexMember[indexMember] > 0)
-          {
-            for (int i = 0; i < logIndexMember[indexMember]; i++)
-            {
-              string kodeTransaksi = g_logPenjualanMember[indexMember][i][0];
-              string tglTransaksi = g_logPenjualanMember[indexMember][i][1];
-              int hargaTransaksi = g_logHargaPenjualanMember[indexMember][i];
-
-              cout << "[" + tglTransaksi + "] "
-                   << "#" + kodeTransaksi + " "
-                   << "Rp" << hargaTransaksi << "\n";
-              total += hargaTransaksi;
-            }
-            cout << "\n";
-          }
-          else
-            cout << "- \n";
-
-          cout << "Total : Rp" << total << "\n\n";
-          PressAnyKey();
-
+          ReadMemberTransaction(indexMember, logIndexMember[indexMember]);
           break;
         }
 
@@ -800,6 +765,22 @@ void AddMember()
   PressAnyKey();
 }
 
+int FindMember(string uname, string msg)
+{
+  int index;
+  for (int i = 0; i < activeMember; i++)
+  {
+    index = ((uname == g_member[i][0])) ? i : activeMember;
+    if (index != activeMember)
+      break;
+  }
+
+  if (index == activeMember)
+    cout << msg << "\n\n";
+
+  return index;
+}
+
 void ReadMember(int index)
 {
   string member[4];
@@ -812,6 +793,34 @@ void ReadMember(int index)
        << "Username \t : " + member[0] + "\n"
        << "Alamat \t : " + member[2] + "\n"
        << "Email \t : " + member[3] + "\n\n";
+}
+
+void ReadMemberTransaction(int indexMember, int logIndex)
+{
+  int total = 0;
+  string nama = g_member[indexMember][1];
+
+  cout << "Riwayat Pengeluaran " + nama + " : \n";
+  if (logIndex > 0)
+  {
+    for (int i = 0; i < logIndex; i++)
+    {
+      string kodeTransaksi = g_logPenjualanMember[indexMember][i][0];
+      string tglTransaksi = g_logPenjualanMember[indexMember][i][1];
+      int hargaTransaksi = g_logHargaPenjualanMember[indexMember][i];
+
+      cout << "[" + tglTransaksi + "] "
+           << "#" + kodeTransaksi + " "
+           << "Rp" << hargaTransaksi << "\n";
+      total += hargaTransaksi;
+    }
+    cout << "\n";
+  }
+  else
+    cout << "- \n";
+
+  cout << "Total : Rp" << total << "\n\n";
+  PressAnyKey();
 }
 
 string NoTransaksi(string tgl)

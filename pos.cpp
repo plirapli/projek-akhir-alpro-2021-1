@@ -115,7 +115,6 @@ int main()
       system("CLS");
       cout << "Selamat datang, " + admin + "! \n\n";
     }
-
   } while (ulangiMenu == 1);
 
   // Main Program
@@ -675,7 +674,7 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
   else
   {
     string field[5] = {"No", "Barang", "Harga", "Qty", "Total"};
-    int totalColLength = 0, colLength[5] = {4, 14, 12, 5, 12};
+    int totalColLength = 0, colLength[5] = {4, 14, 12, 5, 16};
     total = 0;
 
     // Mencari jumlah kata terbanyak di field Nama barang
@@ -690,18 +689,18 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
       totalColLength += colLength[i];
 
     // Menampilkan Cart
-    Garis(totalColLength);
-
     // Kolom
+    Garis(totalColLength);
+    cout << "  ";
     for (int i = 0; i < 5; i++)
       cout << left << setw(colLength[i]) << field[i];
     cout << "\n";
-
     Garis(totalColLength);
 
     // Isi Keranjang
     for (int i = 0; i < jml; i++)
     {
+      cout << "  ";
       cout << left << setw(colLength[0]) << i + 1
            << setw(colLength[1]) << cartStr[i][1] + " (" + cartStr[i][0] + ") "
            << "Rp" << setw(colLength[2] - 2) << cartInt[i][1]
@@ -711,7 +710,6 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
 
       cout << "\n";
     }
-
     Garis(totalColLength);
 
     if (member == 1)
@@ -810,10 +808,10 @@ void ReadMember(int index)
     member[i] = g_member[index][i];
 
   cout << "[PROFILE] \n"
-       << "Nama \t : " + member[1] + "\n"
-       << "Username \t : " + member[0] + "\n"
-       << "Alamat \t : " + member[2] + "\n"
-       << "Email \t : " + member[3] + "\n\n";
+       << "Nama     : " + member[1] + "\n"
+       << "Username : " + member[0] + "\n"
+       << "Alamat   : " + member[2] + "\n"
+       << "Email    : " + member[3] + "\n\n";
 }
 
 void ReadMemberTransaction(int indexMember, int logIndex)
@@ -858,18 +856,18 @@ string NoTransaksi(string tgl)
   return kodeTgl + res;
 }
 
-void PressAnyKey()
-{
-  cout << "\n"
-       << "[Press any key to continue.]";
-  getch();
-  system("CLS");
-}
-
 void Garis(int length)
 {
   cout << "+";
   for (int i = 0; i < length - 3; i++)
     cout << "-";
   cout << "+ \n";
+}
+
+void PressAnyKey()
+{
+  cout << "\n"
+       << "[Press any key to continue.]";
+  getch();
+  system("CLS");
 }

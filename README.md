@@ -44,5 +44,5 @@ Baca [panduan berkontribusi](CONTRIBUTING.md) untuk mengetahui lebih lanjut meng
 
 ## Kontak
 
-- [Muhammad Rafli](mrafli.work@gmail.com)
-- [Desy Nur Azizah](123210083@gmail.com)
+- [Muhammad Rafli](mailto:rafli.work@gmail.com)
+- [Desy Nur Azizah](mailto:123210083@gmail.com)

@@ -55,7 +55,7 @@ int g_invStokHarga[6][2] = {
     {0, 3000000},
     {1, 2800000},
 };
-int invSize = 6; // Index Data Inv
+int g_invSize = 6; // Index Data Inv
 
 // 👫 DATA MEMBER
 string g_member[20][4] = {
@@ -64,7 +64,7 @@ string g_member[20][4] = {
     {"cici_sunbae", "Cici Yuriza", "Bengkulu", "cici@dummy.com"},
     {"nurlumos", "Heri Nur Cahyana", "Singapore", "lumosmaxima@dummy.com"},
 };
-int activeMember = 4; // Jumlah member aktif
+int g_activeMember = 4; // Jumlah member aktif
 
 // 📝 DATA PENJUALAN
 string logPenjualan[50][2];
@@ -190,13 +190,13 @@ int main()
       string inBuyDate, noTrans, inKodeBarang;
 
       // Copy inv "stok"
-      int copy_invStok[invSize];
-      for (int i = 0; i < invSize; i++)
+      int copy_invStok[g_invSize];
+      for (int i = 0; i < g_invSize; i++)
         copy_invStok[i] = g_invStokHarga[i][0];
 
       // Initialize Cart
-      string cartStr[invSize][2];
-      int cartInt[invSize][3];
+      string cartStr[g_invSize][2];
+      int cartInt[g_invSize][3];
 
       cout << "Kasir \n"
            << "Tanggal Transaksi (DD-MM-YYYY): ";
@@ -237,7 +237,7 @@ int main()
             // Mengecek ketersediaan barang
             indexBarang = FindInv(inKodeBarang);
 
-            if (indexBarang != invSize)
+            if (indexBarang != g_invSize)
             {
               string namaBarang = g_invKodeNama[indexBarang][1];
               int stok = copy_invStok[indexBarang];
@@ -394,7 +394,7 @@ int main()
                   cin >> inUname;
 
                   indexMember = FindMember(inUname);
-                } while (indexMember == activeMember);
+                } while (indexMember == g_activeMember);
 
                 cout << "\n";
                 ReadMember(indexMember);
@@ -424,7 +424,7 @@ int main()
               int change = paid - total;
 
               // Ubah stok di inventaris
-              for (int i = 0; i < invSize; i++)
+              for (int i = 0; i < g_invSize; i++)
                 g_invStokHarga[i][0] = copy_invStok[i];
 
               // Masukkan pembelian ke db log penjualan (khusus member)
@@ -515,7 +515,7 @@ int main()
 
             indexMember = FindMember(username);
 
-          } while (indexMember == activeMember);
+          } while (indexMember == g_activeMember);
           system("CLS");
 
           ReadMember(indexMember);
@@ -563,7 +563,7 @@ void ReadDataInventaris()
        << "| \n";
   Garis(jmlGaris);
 
-  for (int i = 0; i < invSize; i++)
+  for (int i = 0; i < g_invSize; i++)
   {
     string kode = g_invKodeNama[i][0];
     string nama = g_invKodeNama[i][1];
@@ -594,7 +594,7 @@ void ReadDataInvCopy(int invStok[])
        << "| \n";
   Garis(jmlGaris);
 
-  for (int i = 0; i < invSize; i++)
+  for (int i = 0; i < g_invSize; i++)
   {
     string kode = g_invKodeNama[i][0];
     string nama = g_invKodeNama[i][1];
@@ -614,10 +614,10 @@ void ReadDataInvCopy(int invStok[])
 int FindInv(string kodeBarang)
 {
   int index;
-  for (int i = 0; i < invSize; i++)
+  for (int i = 0; i < g_invSize; i++)
   {
-    index = (kodeBarang == g_invKodeNama[i][0]) ? i : invSize;
-    if (index != invSize)
+    index = (kodeBarang == g_invKodeNama[i][0]) ? i : g_invSize;
+    if (index != g_invSize)
       break;
   }
   return index;
@@ -629,7 +629,7 @@ void UpdateStokBarang(string search)
   string nama[50];
 
   int counter = 0;
-  for (int x = 0; x < invSize; x++)
+  for (int x = 0; x < g_invSize; x++)
   {
     if (g_invKodeNama[x][0] == search)
     {
@@ -652,7 +652,7 @@ void UpdateHargaBarang(string search)
   string nama[50];
 
   int counter = 0;
-  for (int x = 0; x < invSize; x++)
+  for (int x = 0; x < g_invSize; x++)
   {
     if (g_invKodeNama[x][0] == search)
     {
@@ -756,7 +756,7 @@ void ReadTransaction(int logIndex)
 void ReadMembers()
 {
   cout << "Daftar Member : \n";
-  for (int i = 0; i < activeMember; i++)
+  for (int i = 0; i < g_activeMember; i++)
   {
     cout << "| " << i + 1 << " | ";
     for (int j = 0; j < 2; j++)
@@ -779,9 +779,9 @@ void AddMember()
     cout << field[i] + ": ";
     getline(cin, newMember[i]);
 
-    g_member[activeMember][i] = newMember[i];
+    g_member[g_activeMember][i] = newMember[i];
   }
-  activeMember++;
+  g_activeMember++;
   cout << "New member added! \n";
   PressAnyKey();
 }
@@ -789,14 +789,14 @@ void AddMember()
 int FindMember(string uname, string msg)
 {
   int index;
-  for (int i = 0; i < activeMember; i++)
+  for (int i = 0; i < g_activeMember; i++)
   {
-    index = ((uname == g_member[i][0])) ? i : activeMember;
-    if (index != activeMember)
+    index = ((uname == g_member[i][0])) ? i : g_activeMember;
+    if (index != g_activeMember)
       break;
   }
 
-  if (index == activeMember)
+  if (index == g_activeMember)
     cout << msg << "\n\n";
 
   return index;

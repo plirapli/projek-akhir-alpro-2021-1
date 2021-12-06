@@ -76,13 +76,12 @@ int main()
 {
   // Initialize Main Variable
   bool ulangiMenu, ulangiProgram = 1;
-  int logIndex = 0, logIndexMember[20];
+  int logIndex = 0, logIndexMember[20] = {};
   char menuOption;
   string admin;
 
   do
   {
-
     // Login
     do
     {

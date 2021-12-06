@@ -40,7 +40,7 @@ _CRM (Customer Relationship Management)_ membantu mengatur data member seperti m
 
 ## Cara Berkontribusi
 
-Baca [panduan berkontribusi](CONTRIBUTING.MD) untuk mengetahui lebih lanjut mengenai cara melakukan kontribusi pada projek ini.
+Baca [panduan berkontribusi](CONTRIBUTING.md) untuk mengetahui lebih lanjut mengenai cara melakukan kontribusi pada projek ini.
 
 ## Kontak
 

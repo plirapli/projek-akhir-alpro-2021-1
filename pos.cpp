@@ -551,7 +551,7 @@ int main()
 
 void ReadDataInventaris()
 {
-  int jmlGaris = 70;
+  int jmlGaris = 67;
 
   cout << "Daftar Barang : \n";
   Garis(jmlGaris);
@@ -582,7 +582,7 @@ void ReadDataInventaris()
 
 void ReadDataInvCopy(int invStok[])
 {
-  int jmlGaris = 70;
+  int jmlGaris = 67;
 
   cout << "Daftar Barang : \n";
   Garis(jmlGaris);
@@ -755,15 +755,40 @@ void ReadTransaction(int logIndex)
 
 void ReadMembers()
 {
+  string field[3] = {"No", "Username", "Nama Member"};
+  int totalColLength = 5, i, j, colLength[3] = {3, 7, 14};
+
+  // Mencari jumlah kata terbanyak di field Nama
+  for (i = 0; i < g_activeMember; i++)
+  {
+    for (j = 0; j < 2; j++)
+    {
+      int dataLength = g_member[i][j].length() + 1;
+      colLength[j + 1] = (dataLength > colLength[j + 1]) ? dataLength : colLength[j + 1];
+    }
+  }
+
+  for (i = 0; i < 3; i++)
+    totalColLength += colLength[i];
+
   cout << "Daftar Member : \n";
+
+  Garis(totalColLength);
+  for (int i = 0; i < 3; i++)
+    cout << left << "| " << setw(colLength[i]) << field[i];
+  cout << "| \n";
+  Garis(totalColLength);
+
   for (int i = 0; i < g_activeMember; i++)
   {
-    cout << "| " << i + 1 << " | ";
-    for (int j = 0; j < 2; j++)
-      cout << g_member[i][j] + " | ";
+    cout << "| " << left << setw(colLength[0]) << i + 1;
 
-    cout << "\n";
+    for (j = 0; j < 2; j++)
+      cout << left << "| " << setw(colLength[j + 1]) << g_member[i][j];
+
+    cout << "| \n";
   }
+  Garis(totalColLength);
   cout << "\n";
 }
 
@@ -861,7 +886,7 @@ string NoTransaksi(string tgl)
 void Garis(int length)
 {
   cout << "+";
-  for (int i = 0; i < length - 3; i++)
+  for (int i = 0; i < length; i++)
     cout << "-";
   cout << "+ \n";
 }

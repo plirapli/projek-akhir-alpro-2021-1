@@ -836,15 +836,16 @@ void AddMember()
       }
     } while (isExist == 1);
 
-    g_member[g_activeMember][0] = newMember[0];
-
     for (int i = 1; i < 4; i++)
     {
       cout << field[i] + ": ";
       getline(cin, newMember[i]);
-
-      g_member[g_activeMember][i] = newMember[i];
     }
+
+    // Menyimpan input ke data member
+    for (int i = 0; i < 4; i++)
+      g_member[g_activeMember][i] = newMember[i];
+
     g_activeMember++;
     cout << "Berhasil mendaftarkan member baru! \n";
   }

@@ -74,7 +74,7 @@ int g_logHargaPenjualanMember[20][50];
 
 int main()
 {
-  // Initialize Main Variable
+  // Initialize main var
   bool ulangiMenu, ulangiProgram = 1;
   int logIndex = 0, logIndexMember[20] = {};
   char menuOption;
@@ -484,6 +484,7 @@ int main()
                << "[1] Lihat daftar member \n"
                << "[2] Tambah Member \n"
                << "[3] Detail pengeluaran member \n"
+               << "[4] Hapus member \n"
                << "[0] Kembali \n"
                << "Pilih > ";
           cin >> menuOption;
@@ -522,6 +523,57 @@ int main()
             ReadMember(indexMember);
             ReadMemberTransaction(indexMember, logIndexMember[indexMember]);
             break;
+          }
+
+          case '4':
+          {
+            bool ulangiHapus = 1;
+            int indexMember;
+            string username;
+
+            system("CLS");
+            ReadMembers();
+            cout << "\n";
+
+            do
+            {
+              do
+              {
+                cout << "Masukkan username > ";
+                cin >> username;
+
+                indexMember = FindMember(username);
+              } while (indexMember == g_activeMember);
+
+              system("CLS");
+              ReadMember(indexMember);
+
+              cout << "Lanjutkan (y/n)? > ";
+              cin >> menuOption;
+
+              if (menuOption == 'y' || menuOption == 'Y')
+              {
+                // Menambah stok barang yang telah dihapus
+                // indexBarang = FindInv(cartStr[inNomor - 1][0]);
+                // copy_invStok[indexBarang] += cartInt[inNomor - 1][0];
+
+                // // Menaikkan baris
+                // for (int i = inNomor - 1; i < jmlCart; i++)
+                // {
+                //   cartStr[i][0] = cartStr[i + 1][0];
+                //   cartStr[i][1] = cartStr[i + 1][1];
+                //   cartInt[i][0] = cartInt[i + 1][0];
+                //   cartInt[i][1] = cartInt[i + 1][1];
+                //   cartInt[i][2] = cartInt[i + 1][2];
+                // }
+                // jmlCart--;
+
+                cout << "Member telah dihapus! \n";
+                PressAnyKey();
+              }
+
+              ulangiHapus = 0;
+            } while (ulangiHapus == 1);
           }
 
           case '0':

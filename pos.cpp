@@ -292,6 +292,7 @@ int main()
             } while (ulangiCari == 1);
           }
 
+          // Kembali
           else if (menuOption == '0')
           {
             cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";
@@ -471,7 +472,6 @@ int main()
           }
         } while (ulangiKasir == 1);
       }
-      // END FITUR KASIR
 
       // FITUR LAPORAN PENJUALAN
       else if (menuOption == '3')
@@ -539,7 +539,6 @@ int main()
 
             system("CLS");
             ReadMembers();
-            cout << "\n";
 
             do
             {
@@ -559,20 +558,15 @@ int main()
 
               if (menuOption == 'y' || menuOption == 'Y')
               {
-                // Menambah stok barang yang telah dihapus
-                // indexBarang = FindInv(cartStr[inNomor - 1][0]);
-                // copy_invStok[indexBarang] += cartInt[inNomor - 1][0];
+                // Menaikkan baris
+                for (int i = indexMember; i < g_activeMember; i++)
+                {
+                  for (int j = 0; j < 4; j++)
+                    g_member[i][j] = g_member[i + 1][j];
 
-                // // Menaikkan baris
-                // for (int i = inNomor - 1; i < jmlCart; i++)
-                // {
-                //   cartStr[i][0] = cartStr[i + 1][0];
-                //   cartStr[i][1] = cartStr[i + 1][1];
-                //   cartInt[i][0] = cartInt[i + 1][0];
-                //   cartInt[i][1] = cartInt[i + 1][1];
-                //   cartInt[i][2] = cartInt[i + 1][2];
-                // }
-                // jmlCart--;
+                  logIndexMember[i] = logIndexMember[i + 1];
+                }
+                g_activeMember--;
 
                 cout << "Member telah dihapus! \n";
                 PressAnyKey();

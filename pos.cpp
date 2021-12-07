@@ -502,6 +502,7 @@ int main()
             AddMember();
             break;
 
+          // Detail pengeluaran member
           case '3':
           {
             int indexMember;
@@ -525,6 +526,7 @@ int main()
             break;
           }
 
+          // Hapus member
           case '4':
           {
             bool ulangiHapus = 1;

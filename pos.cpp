@@ -65,8 +65,8 @@ string g_member[20][4] = {
 int g_activeMember = 3; // Jumlah member aktif
 
 // 📝 DATA PENJUALAN
-string logPenjualan[50][2];
-int logHargaPenjualan[50];
+string g_logPenjualan[50][2];
+int g_logHargaPenjualan[50];
 
 // 📝👫 DATA PENJUALAN MEMBER
 string g_logPenjualanMember[20][50][2];
@@ -445,9 +445,9 @@ int main()
                 }
 
                 // Masukkan pembelian ke db log penjualan
-                logPenjualan[logIndex][0] = noTrans;
-                logPenjualan[logIndex][1] = inBuyDate;
-                logHargaPenjualan[logIndex] = total;
+                g_logPenjualan[logIndex][0] = noTrans;
+                g_logPenjualan[logIndex][1] = inBuyDate;
+                g_logHargaPenjualan[logIndex] = total;
                 logIndex++;
 
                 // Nota Pembelian
@@ -803,10 +803,10 @@ void ReadTransaction(int logIndex)
   {
     for (int i = 0; i < logIndex; i++)
     {
-      cout << "[" + logPenjualan[i][1] + "] "
-           << "#" + logPenjualan[i][0] + " "
-           << "Rp" << logHargaPenjualan[i] << "\n";
-      total += logHargaPenjualan[i];
+      cout << "[" + g_logPenjualan[i][1] + "] "
+           << "#" + g_logPenjualan[i][0] + " "
+           << "Rp" << g_logHargaPenjualan[i] << "\n";
+      total += g_logHargaPenjualan[i];
     }
     cout << "\n";
   }
@@ -884,15 +884,16 @@ void AddMember()
       }
     } while (isExist == 1);
 
-    g_member[g_activeMember][0] = newMember[0];
-
     for (int i = 1; i < 4; i++)
     {
       cout << field[i] + ": ";
       getline(cin, newMember[i]);
-
-      g_member[g_activeMember][i] = newMember[i];
     }
+
+    // Menyimpan input ke data member
+    for (int i = 0; i < 4; i++)
+      g_member[g_activeMember][i] = newMember[i];
+
     g_activeMember++;
     cout << "Berhasil mendaftarkan member baru! \n";
   }

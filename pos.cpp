@@ -22,11 +22,11 @@ string NoTransaksi(string tgl); // Mengenerate kode transaksi
 void ReadTransaction(int logIndex); // Menampilkan riwayat transaksi
 
 // 🙋🏼‍♂️ CRM
-void ReadMembers();                                                   // Menampilkan semua member
-void ReadMember(int index);                                           // Menampilkan member
-int FindMember(string uname, string msg = "Member tidak ditemukan!"); // Mencari member berdasarkan uname
-void AddMember();                                                     // Menambahkan member baru
-void ReadMemberTransaction(int indexMember, int logIndex);            // Menampilkan transaksi member
+void ReadMembers();                                        // Menampilkan semua member
+void ReadMember(int index);                                // Menampilkan member
+int FindMember(string uname);                              // Mencari member berdasarkan username
+void AddMember();                                          // Menambahkan member baru
+void ReadMemberTransaction(int indexMember, int logIndex); // Menampilkan transaksi member
 
 // ⚪ MISC
 void Garis(int length); // Generate garis
@@ -395,6 +395,10 @@ int main()
                     cin >> inUname;
 
                     indexMember = FindMember(inUname);
+
+                    if (indexMember == g_activeMember)
+                      cout << "Member tidak ditemukan. \n\n";
+
                   } while (indexMember == g_activeMember);
 
                   cout << "\n";
@@ -487,17 +491,15 @@ int main()
                << "[0] Kembali \n"
                << "Pilih > ";
           cin >> menuOption;
+          system("CLS");
 
           switch (menuOption)
           {
           case '1':
-            system("CLS");
             ReadMembers();
             break;
 
           case '2':
-            system("CLS");
-            ReadMembers();
             AddMember();
             break;
 
@@ -506,7 +508,6 @@ int main()
             int indexMember;
             string username;
 
-            system("CLS");
             cout << "Detail pengeluaran member \n";
 
             do
@@ -515,6 +516,9 @@ int main()
               cin >> username;
 
               indexMember = FindMember(username);
+
+              if (indexMember == g_activeMember)
+                cout << "Member tidak ditemukan. \n\n";
 
             } while (indexMember == g_activeMember);
             system("CLS");
@@ -525,7 +529,6 @@ int main()
           }
 
           case '0':
-            system("CLS");
             ulangiCRM = 0;
             break;
 
@@ -807,14 +810,35 @@ void ReadMembers()
 
 void AddMember()
 {
+  bool isExist;
+  int indexMember;
   string newMember[4], field[4] = {"Username", "Nama", "Alamat", "Email"};
 
   if (g_activeMember < 20)
   {
-    cout << "Menambahkan member baru \n";
-    cin.ignore();
+    // Input dan mengecek ketersediaan username
+    do
+    {
+      ReadMembers();
+      cout << "Menambahkan member baru \n";
 
-    for (int i = 0; i < 4; i++)
+      cout << field[0] + ": ";
+      cin >> newMember[0];
+      cin.ignore();
+
+      indexMember = FindMember(newMember[0]);
+
+      if (indexMember != g_activeMember)
+      {
+        cout << "Username telah terpakai. \n\n";
+        isExist = 1;
+        PressAnyKey();
+      }
+    } while (isExist == 1);
+
+    g_member[g_activeMember][0] = newMember[0];
+
+    for (int i = 1; i < 4; i++)
     {
       cout << field[i] + ": ";
       getline(cin, newMember[i]);
@@ -822,7 +846,7 @@ void AddMember()
       g_member[g_activeMember][i] = newMember[i];
     }
     g_activeMember++;
-    cout << "New member added! \n";
+    cout << "Berhasil mendaftarkan member baru! \n";
   }
   else
     cout << "Jumlah member telah melebihi batas! \n";
@@ -830,7 +854,7 @@ void AddMember()
   PressAnyKey();
 }
 
-int FindMember(string uname, string msg)
+int FindMember(string uname)
 {
   int index;
   for (int i = 0; i < g_activeMember; i++)
@@ -839,9 +863,6 @@ int FindMember(string uname, string msg)
     if (index != g_activeMember)
       break;
   }
-
-  if (index == g_activeMember)
-    cout << msg << "\n\n";
 
   return index;
 }

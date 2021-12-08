@@ -502,6 +502,7 @@ int main()
             break;
 
           case '2':
+            ReadMembers();
             AddMember();
             break;
 
@@ -511,6 +512,7 @@ int main()
             int indexMember;
             string username;
 
+            ReadMembers();
             cout << "Detail pengeluaran member \n";
 
             do
@@ -538,7 +540,6 @@ int main()
             int indexMember;
             string username;
 
-            system("CLS");
             ReadMembers();
 
             do
@@ -549,6 +550,9 @@ int main()
                 cin >> username;
 
                 indexMember = FindMember(username);
+
+                if (indexMember == g_activeMember)
+                  cout << "Member tidak ditemukan. \n\n";
               } while (indexMember == g_activeMember);
 
               system("CLS");
@@ -570,11 +574,14 @@ int main()
                 g_activeMember--;
 
                 cout << "Member telah dihapus! \n";
-                PressAnyKey();
               }
+              else
+                cout << "Dibatalkan. \n";
 
+              PressAnyKey();
               ulangiHapus = 0;
             } while (ulangiHapus == 1);
+            break;
           }
 
           case '0':
@@ -868,9 +875,7 @@ void AddMember()
     // Input dan mengecek ketersediaan username
     do
     {
-      ReadMembers();
       cout << "Menambahkan member baru \n";
-
       cout << field[0] + ": ";
       cin >> newMember[0];
       cin.ignore();
@@ -915,7 +920,6 @@ int FindMember(string uname)
     if (index != g_activeMember)
       break;
   }
-
   return index;
 }
 

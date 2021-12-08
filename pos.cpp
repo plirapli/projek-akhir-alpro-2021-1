@@ -883,6 +883,8 @@ void AddMember()
         isExist = 1;
         PressAnyKey();
       }
+      else
+        isExist = 0;
     } while (isExist == 1);
 
     for (int i = 1; i < 4; i++)

@@ -206,12 +206,14 @@ int main()
         cout << "Kasir \n"
              << "Tanggal Transaksi (DD-MM-YYYY): ";
         cin >> inBuyDate;
-        cout << "\n";
 
         noTrans = NoTransaksi(inBuyDate);
 
         do
         {
+          system("CLS");
+          cout << "Kasir \n"
+               << "Tanggal: " << inBuyDate << "\n\n";
           ReadDataInvCopy(copy_invStok);
           cout << "\n";
 
@@ -232,10 +234,11 @@ int main()
             bool ulangiCari = 1;
             int indexBarang;
 
-            system("CLS");
-            ReadDataInvCopy(copy_invStok);
             do
             {
+              system("CLS");
+              ReadDataInvCopy(copy_invStok);
+
               cout << "Masukkan kode barang: ";
               cin >> inKodeBarang;
 
@@ -251,13 +254,15 @@ int main()
                 if (stok > 0)
                 {
                   system("CLS");
-                  cout << "Kode Prduk   : " << inKodeBarang << "\n"
+                  cout << "Kode Produk  : " << inKodeBarang << "\n"
                        << "Nama Produk  : " << namaBarang << "\n"
-                       << "Harga Produk : Rp" << hargaBarang << ",- \n";
+                       << "Stok Produk  : " << stok << "\n"
+                       << "Harga Produk : Rp" << hargaBarang << ",- \n\n";
+
                   cout << "Lanjutkan (y/n)? > ";
                   cin >> menuOption;
 
-                  if (menuOption == 'y')
+                  if (menuOption == 'y' || menuOption == 'Y')
                   {
                     do
                     {
@@ -281,12 +286,17 @@ int main()
                     jmlCart++;
 
                     cout << "Added to cart! \n";
+                    ulangiCari = 0;
+                  }
+                  else if (menuOption == 'n' || menuOption == 'N')
+                  {
+                    cout << "Penambahan barang dibatalkan. \n";
+                    ulangiCari = 0;
                   }
                   else
-                    cout << "Penambahan barang dibatalkan. \n";
+                    cout << "Input tidak valid! \n";
 
                   PressAnyKey();
-                  ulangiCari = 0;
                 }
                 else
                   cout << "Stok Habis! \n\n";
@@ -360,10 +370,17 @@ int main()
                     jmlCart--;
 
                     cout << "Barang telah dihapus! \n";
-                    PressAnyKey();
+                    ulangiHapus = 0;
                   }
+                  else if (menuOption == 'n' || menuOption == 'N')
+                  {
+                    cout << "Dibatalkan. \n";
+                    ulangiHapus = 0;
+                  }
+                  else
+                    cout << "Input tidak valid! \n";
 
-                  ulangiHapus = 0;
+                  PressAnyKey();
                 }
                 else
                   cout << "Barang tidak ditemukan \n";
@@ -427,7 +444,6 @@ int main()
 
                   if (paid < total)
                     cout << "Uang anda tidak mencukupi. \n";
-
                 } while (paid < total);
                 system("CLS");
 
@@ -581,12 +597,17 @@ int main()
                 g_activeMember--;
 
                 cout << "Member telah dihapus! \n";
+                ulangiHapus = 0;
+              }
+              else if (menuOption == 'n' || menuOption == 'N')
+              {
+                cout << "Dibatalkan. \n";
+                ulangiHapus = 0;
               }
               else
-                cout << "Dibatalkan. \n";
+                cout << "Input tidak valid! \n";
 
               PressAnyKey();
-              ulangiHapus = 0;
             } while (ulangiHapus == 1);
             break;
           }
@@ -879,7 +900,7 @@ void ReadMembers()
 
 void AddMember()
 {
-  bool isExist;
+  bool isExist, ulangiPrompt;
   char menuOption;
   int indexMember;
   string newMember[4], field[4] = {"Username", "Nama", "Alamat", "Email"};
@@ -913,20 +934,29 @@ void AddMember()
       getline(cin, newMember[i]);
     }
 
-    cout << "Tambahkan " + newMember[1] + "sebagai member baru (Y/N)? > ";
-    cin >> menuOption;
-
-    if (menuOption == 'y' || menuOption == 'Y')
+    do
     {
-      // Menyimpan input ke data member
-      for (int i = 0; i < 4; i++)
-        g_member[g_activeMember][i] = newMember[i];
+      cout << "Tambahkan " + newMember[1] + "sebagai member baru (Y/N)? > ";
+      cin >> menuOption;
 
-      g_activeMember++;
-      cout << "Berhasil mendaftarkan member baru! \n";
-    }
-    else if (menuOption == 't' || menuOption == 'T')
-      cout << "Pendaftaran member dibatalkan. \n";
+      if (menuOption == 'y' || menuOption == 'Y')
+      {
+        // Menyimpan input ke data member
+        for (int i = 0; i < 4; i++)
+          g_member[g_activeMember][i] = newMember[i];
+
+        g_activeMember++;
+        cout << "Berhasil mendaftarkan member baru! \n";
+        ulangiPrompt = 0;
+      }
+      else if (menuOption == 'n' || menuOption == 'N')
+      {
+        cout << "Pendaftaran member dibatalkan. \n";
+        ulangiPrompt = 0;
+      }
+      else
+        cout << "Input tidak valid! \n";
+    } while (ulangiPrompt == 1);
   }
   else
     cout << "Jumlah member telah melebihi batas! \n";

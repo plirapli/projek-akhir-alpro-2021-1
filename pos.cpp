@@ -435,11 +435,13 @@ int main()
                 }
 
                 ReadCart(cartStr, cartInt, jmlCart, total, isMember);
+                cout << "\n";
 
                 // Bayar
                 do
                 {
-                  cout << "Bayar : Rp";
+                  cout << "Total : Rp" << total << "\n"
+                       << "Bayar : Rp";
                   cin >> paid;
 
                   if (paid < total)
@@ -471,11 +473,12 @@ int main()
                 logIndex++;
 
                 // Nota Pembelian
-                cout << "No.     : " + noTrans + "\n"
-                     << "Kasir   : " + admin + "\n";
+                cout << "  NO.     : " + noTrans + "\n"
+                     << "  TANGGAL : " + inBuyDate + "\n"
+                     << "  KASIR   : " + admin + "\n";
                 ReadCart(cartStr, cartInt, jmlCart, total, isMember);
-                cout << "Bayar   : Rp" << paid << "\n"
-                     << "Kembali : Rp" << change << "\n\n";
+                cout << "  BAYAR   : Rp" << paid << "\n"
+                     << "  KEMBALI : Rp" << change << "\n\n";
 
                 cout << "Terima kasih! \n";
                 PressAnyKey();
@@ -782,7 +785,7 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
   else
   {
     string field[5] = {"No", "Barang", "Harga", "Qty", "Total"};
-    int totalColLength = 0, colLength[5] = {4, 14, 12, 5, 16};
+    int totalColLength = 0, colLength[5] = {4, 14, 12, 5, 18};
     total = 0;
 
     // Mencari jumlah kata terbanyak di field Nama barang
@@ -813,7 +816,7 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
            << setw(colLength[1]) << cartStr[i][1] + " (" + cartStr[i][0] + ") "
            << "Rp" << setw(colLength[2] - 2) << cartInt[i][1]
            << setw(colLength[3]) << cartInt[i][0]
-           << "Rp" << cartInt[i][2];
+           << "Rp" << right << setw(colLength[4] - 4) << cartInt[i][2];
       total += cartInt[i][2];
 
       cout << "\n";
@@ -824,14 +827,13 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
     {
       int diskon;
       diskon = total * 0.1;
-
-      cout << "Total : Rp" << total << "\n";
-      cout << "Diskon member (10%) : Rp" << diskon << "\n";
-
       total -= diskon;
-    }
 
-    cout << "Total : Rp" << total << "\n";
+      cout << "  DISKON MEMBER (10%) : Rp"
+           << right << setw(totalColLength - 26) << diskon << "\n";
+    }
+    cout << "  TOTAL : Rp" << right << setw(totalColLength - 12) << total << "\n";
+    Garis(totalColLength);
   }
 }
 

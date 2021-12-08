@@ -7,7 +7,7 @@
 using namespace std;
 
 // 📃 MENU
-void ReadMenu(string menu[]); // Menampilkan daftar menu
+void ReadMenu(string menu[], int length); // Menampilkan daftar menu
 
 // 🏢 DATA INVENTARIS
 void ReadDataInventaris();             // Menampilkan data inventaris
@@ -129,7 +129,7 @@ int main()
 
       // Menampilkan Main Menu
       cout << "MAIN MENU \n";
-      ReadMenu(menuMain);
+      ReadMenu(menuMain, 4);
       cout << "-------------------- \n"
            << "[9] LOG OUT \n"
            << "[0] KELUAR \n"
@@ -496,7 +496,7 @@ int main()
         {
           // Menampilkan Menu CRM
           cout << "Customer Releationship Management (CRM) \n";
-          ReadMenu(menuCRM);
+          ReadMenu(menuCRM, 4);
           cout << "[0] Kembali \n"
                << "Pilih > ";
           cin >> menuOption;
@@ -628,10 +628,8 @@ int main()
   return 0;
 }
 
-void ReadMenu(string menu[])
+void ReadMenu(string menu[], int length)
 {
-  int length = sizeof(menu) / sizeof(menu[0]);
-
   for (int i = 0; i < length; i++)
     cout << "[" << i + 1 << "] " + menu[i] << "\n";
 }

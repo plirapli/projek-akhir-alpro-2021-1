@@ -6,6 +6,9 @@
 
 using namespace std;
 
+// 📃 MENU
+void ReadMenu(string menu[]); // Menampilkan daftar menu
+
 // 🏢 DATA INVENTARIS
 void ReadDataInventaris();             // Menampilkan data inventaris
 void ReadDataInvCopy(int invStok[]);   // Menampilkan data inv (copy)
@@ -120,13 +123,13 @@ int main()
     do
     {
       int logIndex = 0, logIndexMember[20] = {};
-      string menuField[4] = {"INVENTARIS", "KASIR", "LOG PENJUALAN", "CRM"};
+      string menuMain[4] = {"INVENTARIS", "KASIR", "LOG PENJUALAN", "CRM"};
 
       ulangiMenu = 1;
 
+      // Menampilkan Main Menu
       cout << "MAIN MENU \n";
-      for (int i = 0; i < 4; i++)
-        cout << "[" << i + 1 << "] " + menuField[i] << "\n";
+      ReadMenu(menuMain);
       cout << "-------------------- \n"
            << "[9] LOG OUT \n"
            << "[0] KELUAR \n"
@@ -482,15 +485,19 @@ int main()
       else if (menuOption == '4')
       {
         bool ulangiCRM = 1;
+        string menuCRM[4] = {
+            "Daftar Member",
+            "Tambah Member",
+            "Pengeluaran Member",
+            "Hapus Member",
+        };
 
         do
         {
-          cout << "Customer Releationship Management (CRM) \n"
-               << "[1] Lihat daftar member \n"
-               << "[2] Tambah Member \n"
-               << "[3] Detail pengeluaran member \n"
-               << "[4] Hapus member \n"
-               << "[0] Kembali \n"
+          // Menampilkan Menu CRM
+          cout << "Customer Releationship Management (CRM) \n";
+          ReadMenu(menuCRM);
+          cout << "[0] Kembali \n"
                << "Pilih > ";
           cin >> menuOption;
           system("CLS");
@@ -621,16 +628,24 @@ int main()
   return 0;
 }
 
+void ReadMenu(string menu[])
+{
+  int length = sizeof(menu) / sizeof(menu[0]);
+
+  for (int i = 0; i < length; i++)
+    cout << "[" << i + 1 << "] " + menu[i] << "\n";
+}
+
 void ReadDataInventaris()
 {
-  int jmlGaris = 67;
+  int jmlGaris = 59;
 
   cout << "Daftar Barang : \n";
   Garis(jmlGaris);
   cout << left
-       << "| " << setw(15) << "Kode Barang"
+       << "| " << setw(12) << "Kode Barang"
        << "| " << setw(25) << "Nama Barang"
-       << "| " << setw(10) << "Stok"
+       << "| " << setw(5) << "Stok"
        << "| " << setw(10) << "Harga"
        << "| \n";
   Garis(jmlGaris);
@@ -643,9 +658,9 @@ void ReadDataInventaris()
     int harga = g_invStokHarga[i][1];
 
     cout << left
-         << "| " << setw(15) << kode
+         << "| " << setw(12) << kode
          << "| " << setw(25) << nama
-         << "| " << setw(10) << stok
+         << "| " << setw(5) << stok
          << "| " << right << setw(10) << harga;
     cout << "| \n";
   }
@@ -654,15 +669,15 @@ void ReadDataInventaris()
 
 void ReadDataInvCopy(int invStok[])
 {
-  int jmlGaris = 67;
+  int jmlGaris = 60;
 
   cout << "Daftar Barang : \n";
   Garis(jmlGaris);
   cout << left
-       << "| " << setw(15) << "Kode Barang"
+       << "| " << setw(12) << "Kode Barang"
        << "| " << setw(25) << "Nama Barang"
-       << "| " << setw(10) << "Stok"
-       << "| " << setw(10) << "Harga"
+       << "| " << setw(5) << "Stok"
+       << "| " << setw(11) << "Harga (Rp)"
        << "| \n";
   Garis(jmlGaris);
 
@@ -674,10 +689,10 @@ void ReadDataInvCopy(int invStok[])
     int harga = g_invStokHarga[i][1];
 
     cout << left
-         << "| " << setw(15) << kode
+         << "| " << setw(12) << kode
          << "| " << setw(25) << nama
-         << "| " << setw(10) << stok
-         << "| " << right << setw(10) << harga;
+         << "| " << setw(5) << stok
+         << "| " << right << setw(11) << harga;
     cout << "| \n";
   }
   Garis(jmlGaris);

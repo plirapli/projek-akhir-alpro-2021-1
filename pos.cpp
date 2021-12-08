@@ -76,7 +76,6 @@ int main()
 {
   // Initialize Main Variable
   bool ulangiMenu, ulangiProgram = 1;
-  int logIndex = 0, logIndexMember[20] = {};
   char menuOption;
   string admin;
 
@@ -120,13 +119,15 @@ int main()
     // Main Program
     do
     {
+      int logIndex = 0, logIndexMember[20] = {};
+      string menuField[4] = {"INVENTARIS", "KASIR", "LOG PENJUALAN", "CRM"};
+
       ulangiMenu = 1;
 
-      cout << "MAIN MENU \n"
-           << "[1] INVENTARIS \n"
-           << "[2] KASIR \n"
-           << "[3] LOG PENJUALAN \n"
-           << "[4] CRM \n\n"
+      cout << "MAIN MENU \n";
+      for (int i = 0; i < 4; i++)
+        cout << "[" << i + 1 << "] " + menuField[i] << "\n";
+      cout << "-------------------- \n"
            << "[9] LOG OUT \n"
            << "[0] KELUAR \n"
            << "Pilih > ";

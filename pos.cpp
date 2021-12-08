@@ -74,7 +74,7 @@ int g_logHargaPenjualanMember[20][50];
 
 int main()
 {
-  // Initialize Main Variable
+  // Initialize main var
   bool ulangiMenu, ulangiProgram = 1;
   char menuOption;
   string admin;
@@ -293,6 +293,7 @@ int main()
             } while (ulangiCari == 1);
           }
 
+          // Kembali
           else if (menuOption == '0')
           {
             cout << "Yakin ingin kembali? Semua barang di keranjang akan dihapus. (y/n) > ";
@@ -472,7 +473,6 @@ int main()
           }
         } while (ulangiKasir == 1);
       }
-      // END FITUR KASIR
 
       // FITUR LAPORAN PENJUALAN
       else if (menuOption == '3')
@@ -489,6 +489,7 @@ int main()
                << "[1] Lihat daftar member \n"
                << "[2] Tambah Member \n"
                << "[3] Detail pengeluaran member \n"
+               << "[4] Hapus member \n"
                << "[0] Kembali \n"
                << "Pilih > ";
           cin >> menuOption;
@@ -501,14 +502,17 @@ int main()
             break;
 
           case '2':
+            ReadMembers();
             AddMember();
             break;
 
+          // Detail pengeluaran member
           case '3':
           {
             int indexMember;
             string username;
 
+            ReadMembers();
             cout << "Detail pengeluaran member \n";
 
             do
@@ -526,6 +530,57 @@ int main()
 
             ReadMember(indexMember);
             ReadMemberTransaction(indexMember, logIndexMember[indexMember]);
+            break;
+          }
+
+          // Hapus member
+          case '4':
+          {
+            bool ulangiHapus = 1;
+            int indexMember;
+            string username;
+
+            ReadMembers();
+
+            do
+            {
+              do
+              {
+                cout << "Masukkan username > ";
+                cin >> username;
+
+                indexMember = FindMember(username);
+
+                if (indexMember == g_activeMember)
+                  cout << "Member tidak ditemukan. \n\n";
+              } while (indexMember == g_activeMember);
+
+              system("CLS");
+              ReadMember(indexMember);
+
+              cout << "Lanjutkan (y/n)? > ";
+              cin >> menuOption;
+
+              if (menuOption == 'y' || menuOption == 'Y')
+              {
+                // Menaikkan baris
+                for (int i = indexMember; i < g_activeMember; i++)
+                {
+                  for (int j = 0; j < 4; j++)
+                    g_member[i][j] = g_member[i + 1][j];
+
+                  logIndexMember[i] = logIndexMember[i + 1];
+                }
+                g_activeMember--;
+
+                cout << "Member telah dihapus! \n";
+              }
+              else
+                cout << "Dibatalkan. \n";
+
+              PressAnyKey();
+              ulangiHapus = 0;
+            } while (ulangiHapus == 1);
             break;
           }
 
@@ -820,9 +875,7 @@ void AddMember()
     // Input dan mengecek ketersediaan username
     do
     {
-      ReadMembers();
       cout << "Menambahkan member baru \n";
-
       cout << field[0] + ": ";
       cin >> newMember[0];
       cin.ignore();
@@ -835,6 +888,8 @@ void AddMember()
         isExist = 1;
         PressAnyKey();
       }
+      else
+        isExist = 0;
     } while (isExist == 1);
 
     for (int i = 1; i < 4; i++)
@@ -865,7 +920,6 @@ int FindMember(string uname)
     if (index != g_activeMember)
       break;
   }
-
   return index;
 }
 

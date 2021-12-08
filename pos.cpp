@@ -880,6 +880,7 @@ void ReadMembers()
 void AddMember()
 {
   bool isExist;
+  char menuOption;
   int indexMember;
   string newMember[4], field[4] = {"Username", "Nama", "Alamat", "Email"};
 
@@ -905,18 +906,27 @@ void AddMember()
         isExist = 0;
     } while (isExist == 1);
 
+    // Mengisi field nama, alamat, dan email
     for (int i = 1; i < 4; i++)
     {
       cout << field[i] + ": ";
       getline(cin, newMember[i]);
     }
 
-    // Menyimpan input ke data member
-    for (int i = 0; i < 4; i++)
-      g_member[g_activeMember][i] = newMember[i];
+    cout << "Tambahkan " + newMember[1] + "sebagai member baru (Y/N)? > ";
+    cin >> menuOption;
 
-    g_activeMember++;
-    cout << "Berhasil mendaftarkan member baru! \n";
+    if (menuOption == 'y' || menuOption == 'Y')
+    {
+      // Menyimpan input ke data member
+      for (int i = 0; i < 4; i++)
+        g_member[g_activeMember][i] = newMember[i];
+
+      g_activeMember++;
+      cout << "Berhasil mendaftarkan member baru! \n";
+    }
+    else if (menuOption == 't' || menuOption == 'T')
+      cout << "Pendaftaran member dibatalkan. \n";
   }
   else
     cout << "Jumlah member telah melebihi batas! \n";

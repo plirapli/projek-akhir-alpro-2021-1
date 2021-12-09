@@ -80,6 +80,7 @@ int main()
   // Initialize main var
   bool ulangiMenu, ulangiProgram = 1;
   char menuOption;
+  int logIndex = 0, logIndexMember[20] = {};
   string admin;
 
   do
@@ -122,9 +123,7 @@ int main()
     // Main Program
     do
     {
-      int logIndex = 0, logIndexMember[20] = {};
       string menuMain[4] = {"INVENTARIS", "KASIR", "LOG PENJUALAN", "CRM"};
-
       ulangiMenu = 1;
 
       // Menampilkan Main Menu
@@ -215,7 +214,6 @@ int main()
           cout << "Kasir \n"
                << "Tanggal: " << inBuyDate << "\n\n";
           ReadDataInvCopy(copy_invStok);
-          cout << "\n";
 
           cout << "[1] Tambah Barang \n";
           if (jmlCart > 0)
@@ -295,14 +293,13 @@ int main()
                   }
                   else
                     cout << "Input tidak valid! \n";
-
-                  PressAnyKey();
                 }
                 else
-                  cout << "Stok Habis! \n\n";
+                  cout << "Stok Habis! \n";
               }
               else
-                cout << "Barang tidak ditemukan. \n\n";
+                cout << "Barang tidak " + inKodeBarang + " ditemukan. \n";
+              PressAnyKey();
             } while (ulangiCari == 1);
           }
 
@@ -413,6 +410,7 @@ int main()
 
                   do
                   {
+                    ReadMembers();
                     cout << "Masukkan username: ";
                     cin >> inUname;
 
@@ -718,6 +716,7 @@ void ReadDataInvCopy(int invStok[])
     cout << "| \n";
   }
   Garis(jmlGaris);
+  cout << "\n";
 }
 
 int FindInv(string kodeBarang)
@@ -839,19 +838,29 @@ void ReadCart(string cartStr[][2], int cartInt[][3], int jml, int &total, bool m
 
 void ReadTransaction(int logIndex)
 {
-  int total = 0;
+  int total = 0, totalGaris = 46, colLength[3] = {14, 15, 16};
+  string field[3] = {"Tanggal", "No. Transaksi", "Total Pembelian"};
 
   cout << "Riwayat Penjualan : \n";
 
   if (logIndex > 0)
   {
+    Garis(totalGaris);
+    cout << "  ";
+    for (int i = 0; i < 3; i++)
+      cout << left << setw(colLength[i]) << field[i];
+    cout << "\n";
+    Garis(totalGaris);
+
+    cout << "  ";
     for (int i = 0; i < logIndex; i++)
     {
-      cout << "[" + g_logPenjualan[i][1] + "] "
-           << "#" + g_logPenjualan[i][0] + " "
-           << "Rp" << g_logHargaPenjualan[i] << "\n";
+      cout << left << setw(colLength[0]) << "[" + g_logPenjualan[i][1] + "] "
+           << setw(colLength[1]) << "#" + g_logPenjualan[i][0] + " "
+           << "Rp" << setw(colLength[2] - 2) << g_logHargaPenjualan[i] << "\n";
       total += g_logHargaPenjualan[i];
     }
+    Garis(totalGaris);
     cout << "\n";
   }
   else

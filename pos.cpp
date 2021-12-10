@@ -139,7 +139,7 @@ int main()
       // FITUR INVENTARIS
       if (menuOption == '1')
       {
-        char option, ulang, revaluestok;
+        char option;
         string kode;
 
         do
@@ -164,14 +164,14 @@ int main()
           case '2':
             ReadDataInventaris();
             cout << "Search kode barang : ";
-            getline(cin, kode);
+            cin >> kode;
             UpdateStokBarang(kode);
             break;
 
           case '3':
             ReadDataInventaris();
             cout << "Search kode barang : ";
-            getline(cin, kode);
+            cin >> kode;
             UpdateHargaBarang(kode);
             break;
 

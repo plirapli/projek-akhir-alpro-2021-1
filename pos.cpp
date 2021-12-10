@@ -503,7 +503,7 @@ int main()
       {
         bool ulangiCRM = 1;
         string menuCRM[4] = {
-            "Daftar Member",
+            "Lihat Daftar Member",
             "Tambah Member",
             "Pengeluaran Member",
             "Hapus Member",
@@ -526,7 +526,6 @@ int main()
             break;
 
           case '2':
-            ReadMembers();
             AddMember();
             break;
 
@@ -922,6 +921,8 @@ void AddMember()
     do
     {
       cout << "Menambahkan member baru \n";
+      ReadMembers();
+
       cout << field[0] + ": ";
       cin >> newMember[0];
       cin.ignore();
@@ -947,7 +948,7 @@ void AddMember()
 
     do
     {
-      cout << "Tambahkan " + newMember[1] + "sebagai member baru (Y/N)? > ";
+      cout << "Tambahkan " + newMember[1] + " sebagai member baru (Y/N)? > ";
       cin >> menuOption;
 
       if (menuOption == 'y' || menuOption == 'Y')

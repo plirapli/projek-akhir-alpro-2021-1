@@ -911,7 +911,7 @@ void ReadMembers()
 
 void AddMember()
 {
-  bool isExist, ulangiPrompt;
+  bool isExist, ulangiPrompt = 1;
   char menuOption;
   int indexMember;
   string newMember[4], field[4] = {"Username", "Nama", "Alamat", "Email"};

@@ -428,7 +428,8 @@ int main()
                        << "Lanjutkan (y/n)? > ";
                   cin >> menuOption;
 
-                  isMember = (menuOption == 'y' || 'Y') ? 1 : 0;
+                  isMember = (menuOption == 'y' || menuOption == 'Y') ? 1 : 0;
+
                   system("CLS");
                 }
 

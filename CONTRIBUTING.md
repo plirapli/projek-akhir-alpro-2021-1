@@ -34,4 +34,4 @@ Projek ini memiliki 1 _branch_ utama, yaitu `main`. Jika ingin menambah fitur ba
 - Gunakan _camel case_ dalam semua penamaan, baik _variable_ maupun fungsi.
 - Gunakan prefix `g_` untuk mendeklarasikan _variable_ yang memiliki _scope_ global. (Contoh: int g_dataKaryawan)
 - Awali nama fungsi dengan huruf besar. (Contoh: void NamaFungsi)
-- **Dilarang** menuliskan _escape sequence_ (seperti `\n`, `\t`, dsb.) tanpa diawali spasi jika digunakan bersama _string_. (Contoh: "Terima kasih. \n")
+- **Dilarang** menuliskan _escape sequence_ (seperti `\n`, `\t`, dsb.) tanpa diawali spasi jika digunakan bersama _string_. (Contoh: `"Terima kasih. \n"`)
